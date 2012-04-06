@@ -56,6 +56,12 @@ function artwork_form($form, &$form_state, $artwork) {
       '#required' => TRUE,
       '#default_value' => $artwork->max_price,
     ),
+	'currency' => array(
+	  '#type' => 'select',
+      '#title' => t('Currency'),
+      '#options' => array("USD" => "USD"),
+	  '#default_value' => $artwork->currency,
+	},
     'materials' => array(
       '#type' => 'textfield',
       '#title' => t('Materials'),
@@ -88,10 +94,21 @@ function artwork_form($form, &$form_state, $artwork) {
       '#required' => TRUE,
       '#default_value' => $artwork->short_description,  
     ),
+  	'tags' => array(
+      '#type' => 'textfield',
+      '#title' => t('Tags'),
+      '#size' => 255,
+      '#weight' => -5,
+      '#required' => FALSE,
+      '#default_value' => $artwork->tags,  
+    ),
     'image_file_url' => array(
       '#type' => 'hidden',
     ),
     'etsy_id' => array(
+      '#type' => 'hidden',
+    ),
+    'ebay_id' => array(
       '#type' => 'hidden',
     ),
     'stock_count' => array(
@@ -209,7 +226,7 @@ function artwork_add_etsy_item($form, $form_state) {
 
 function artwork_add_ebay_item($form, $form_state) {
   
-  if($res = preg_match('/http:\/\/www.ebay.com\/itm\/.*\?item=(.\d+)&.*/i',  $_POST['ebay_link'], $matches) == 1) {
+  if($match_res = preg_match('/http:\/\/www.ebay.com\/itm\/.*\/(.\d+)\?.*/i',  $_POST['ebay_link'], $matches) == 1) {
 	require_once 'EbatNs/EbatNs_ServiceProxyShopping.php';
 	require_once 'EbatNs/GetSingleItemRequestType.php';
 	require_once 'EbatNs/EbatNs_Logger.php';
@@ -225,26 +242,29 @@ function artwork_add_ebay_item($form, $form_state) {
 	$req->setItemID($matches[1]);
 
 	$details[] = 'Details';
-	$details[] = 'TextDescription';
+	$details[] = 'Description';
 		
 	$req->setIncludeSelector(implode(',', $details));
 
 	$res = $cs->GetSingleItem($req);
 	$item_details = $res->getItem();
 	
-	$form['artwork_details']['title']['#value'] = $item_details->Title;//$res->title;// t($item_details['title']);
-	$form['artwork_details']['description']['#value'] = t($item_details->Description);
+	$description = html_entity_decode(str_replace("<br>","\n",$item_details->Description), ENT_QUOTES, 'UTF-8');
+	
+	$form['artwork_details']['title']['#value'] = t($item_details->Title);//$res->title;// t($item_details['title']);
+	$form['artwork_details']['description']['#value'] = $description;
 	$form['artwork_details']['price']['#value'] = $item_details->CurrentPrice->value;
+	$form['artwork_details']['currency']['#value'] = $item_details->CurrentPrice->attributeValues['currencyID'];
 	$form['artwork_details']['materials']['#value'] = '';//t($item_details['materials']);
-	$form['artwork_details']['category']['#value'] = t($item_details->PrimaryCategoryName);
-	$form['artwork_details']['short_description']['#value'] = t(substr($item_details->Description,0,127));
+	$form['artwork_details']['category']['#value'] = t(array_pop(split(":",$item_details->PrimaryCategoryName)));
+	$form['artwork_details']['short_description']['#value'] = t(substr($description,0,127));
 	$form['artwork_details']['image_file_url']['#value'] = $item_details->PictureURL[0];
-	$form['artwork_details']['etsy_id']['#value'] = $item_details->ItemID;
+	$form['artwork_details']['ebay_id']['#value'] = $item_details->ItemID;
 	$form['artwork_details']['stock_count']['#value'] = $item_details->Quantity;
+	$form['artwork_details']['tags']['#value'] = t($item_details->Tags);
 	
 	$form['artwork_details']['#suffix'] = theme('image',array('path' => $item_details->PictureURL[0])) . "</div>";
   }
-  
   
   return $form['artwork_details'];
 }

@@ -204,10 +204,19 @@ function theme_artwork_front_page_slider(&$variables)
   $nItems = count($variables['items']['#items']);
   
   $artisanIds = array_keys($variables['items']['#items']);
+<<<<<<< HEAD
   if(count($artisanIds) == 0 || $nItems == 0) {
     return "<H1>No Artisan/Artwork Data!</H1>";
   } 
   dprint_r($nItems);
+=======
+  
+  // Fail gracefully if no artisans are present.
+  if(count($artisanIds) == 0) {
+    return "<H1> No artisans registered. </H1>";
+  }
+  
+>>>>>>> f777ab44872502885c8f3f62cae0f971d09430b6
   for($i = 1;$i <= 7;$i+=1) {
     if($i > $nItems) {
 	  $i = rand(1,$nItems);
@@ -218,6 +227,11 @@ function theme_artwork_front_page_slider(&$variables)
       break;
     }
     
+	// Fail gracefully if no artworks are present 
+	if(count($item['artworks']) == 0) {
+       continue;
+    }
+  
     $artisan_file_info = file_load($item['artisan']->album_id);
     $artwork_file_info = file_load($item['artworks'][0]->album_id);
 	
