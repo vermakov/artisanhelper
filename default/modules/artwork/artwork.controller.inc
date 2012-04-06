@@ -216,7 +216,10 @@ class ArtworkController extends DrupalDefaultEntityController {
       'category' => '',
       'materials' => '',
       'etsy_id' => '',
-	  'short_description' => ''
+	  'ebay_id' => '',
+	  'tags' => '',
+	  'short_description' => '',
+	  'currency' => 'USD'
     );
   }
 

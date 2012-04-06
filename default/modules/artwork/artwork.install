@@ -17,6 +17,13 @@ function artwork_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
+      'tags' => array(
+        'description' => 'List of tags to simplify searching.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+      ),
       'description' => array(
         'description' => 'The description of this artwork.',
         'type' => 'text',
@@ -53,6 +60,13 @@ function artwork_schema() {
         'description' => 'Min price of the artwork.',
         'type' => 'float'
       ),
+      'currency' => array(
+        'description' => 'What is the currency of the listing.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => 'USD',
+      ),
       'artisan_id' => array(
         'description' => 'Id of the artisan who created the artwork.',
         'type' => 'int',
@@ -65,6 +79,11 @@ function artwork_schema() {
       ),
       'etsy_id' => array(
         'description' => 'Etsy Id of the artwork (if its an Etsy linked artwork).',
+        'type' => 'int',
+        'not null' => FALSE
+      ),
+      'ebay_id' => array(
+        'description' => 'Ebay Id of the artwork (if its an Ebay linked artwork).',
         'type' => 'int',
         'not null' => FALSE
       ),
@@ -91,6 +110,13 @@ function artwork_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+      ),
+      'tags' => array(
+        'description' => 'List of tags to simplify searching.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
       ),
     ),
     'unique keys' => array(

@@ -205,6 +205,11 @@ function theme_artwork_front_page_slider(&$variables)
   
   $artisanIds = array_keys($variables['items']['#items']);
   
+  // Fail gracefully if no artisans are present.
+  if(count($artisanIds) == 0) {
+    return "<H1> No artisans registered. </H1>";
+  }
+  
   for($i = 1;$i <= 7;$i+=1) {
     if($i > $nItems) {
 	  $i = rand(1,$nItems);
@@ -212,6 +217,11 @@ function theme_artwork_front_page_slider(&$variables)
 	
     $item = $variables['items']['#items'][$artisanIds[$i-1]];
     
+	// Fail gracefully if no artworks are present 
+	if(count($item['artworks']) == 0) {
+       continue;
+    }
+  
     $artisan_file_info = file_load($item['artisan']->album_id);
     $artwork_file_info = file_load($item['artworks'][0]->album_id);
 	
