@@ -95,7 +95,6 @@ class ArtisanEntityController extends EntityAPIController {
 	  'video_link' => '',
 	  'description' => '',
 	);
-    dprint_r($values);
     $model = parent::create($values);
     return $model;
   }  

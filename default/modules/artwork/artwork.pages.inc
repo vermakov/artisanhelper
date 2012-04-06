@@ -289,7 +289,6 @@ function artwork_form_submit($form, &$form_state) {
 	$artwork->album_id = $file_info->fid;
   } else {
     //$file_info = file_load($form_state['field']['field_artwork_images']['und']['items'][0]['fid']);
-	dprint_r($artwork);
 	//$artwork->album_id = $file_info->fid;
   }
   

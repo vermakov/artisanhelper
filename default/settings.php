@@ -205,13 +205,13 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'arthelper_db',
-      'username' => 'root',
-      'password' => '@rtiz@n',
+      'database' => 'artisan_drpl1',
+      'username' => 'artisan_drpl1',
+      'password' => 'xqc6JT5sp0{q',
       'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',
-      'prefix' => 'ahelper',
+      'prefix' => '',
     ),
   ),
 );
@@ -233,10 +233,10 @@ $update_free_access = FALSE;
  * Salt for one-time login links and cancel links, form tokens, etc.
  *
  * This variable will be set to a random value by the installer. All one-time
- * login links will be invalidated if the value is changed. Note that if your
- * site is deployed on a cluster of web servers, you must ensure that this
- * variable has the same value on each server. If this variable is empty, a hash
- * of the serialized database credentials will be used as a fallback salt.
+ * login links will be invalidated if the value is changed.  Note that this
+ * variable must have the same value on every web server.  If this variable is
+ * empty, a hash of the serialized database credentials will be used as a
+ * fallback salt.
  *
  * For enhanced security, you may set this variable to a value using the
  * contents of a file outside your docroot that is never saved together
@@ -246,7 +246,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = 'GQk-CuO6X2BB0k9u8DqbbsYnOvYB-Rcvobuj-mh2Q_Y';
+$drupal_hash_salt = 'B-sZVifEXek5jfHYdApdZmlFYobzHuNP7zb1rLV-i5E';
 
 /**
  * Base URL (optional).
@@ -268,7 +268,7 @@ $drupal_hash_salt = 'GQk-CuO6X2BB0k9u8DqbbsYnOvYB-Rcvobuj-mh2Q_Y';
  * It is not allowed to have a trailing slash; Drupal will add it
  * for you.
  */
-# $base_url = 'http://www.example.com';  // NO trailing slash!
+$base_url = 'http://globergy.com';  // NO trailing slash!
 
 /**
  * PHP settings:

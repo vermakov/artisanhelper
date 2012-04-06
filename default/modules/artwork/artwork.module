@@ -204,13 +204,19 @@ function theme_artwork_front_page_slider(&$variables)
   $nItems = count($variables['items']['#items']);
   
   $artisanIds = array_keys($variables['items']['#items']);
-  
+  if(count($artisanIds) == 0 || $nItems == 0) {
+    return "<H1>No Artisan/Artwork Data!</H1>";
+  } 
+  dprint_r($nItems);
   for($i = 1;$i <= 7;$i+=1) {
     if($i > $nItems) {
 	  $i = rand(1,$nItems);
 	}
 	
     $item = $variables['items']['#items'][$artisanIds[$i-1]];
+    if(count($item['artworks']) == 0) {
+      break;
+    }
     
     $artisan_file_info = file_load($item['artisan']->album_id);
     $artwork_file_info = file_load($item['artworks'][0]->album_id);
