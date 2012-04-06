@@ -1,0 +1,22 @@
+.artisans_list {
+   list-style-type: none;
+}
+
+.artisans_list_cell {
+    background-color: #FFFFFF;
+    border: 1px solid #ECECEC;
+    float: left;
+    height: 200px;
+    margin: 0 8px 14px 0;
+    padding: 6px;
+    position: relative;
+    width: 900px;
+}
+
+.artisan-list-photo {
+    float: left;
+    height: 200px;
+	width: 200px;
+	overflow: none;
+	padding: 10px;
+}

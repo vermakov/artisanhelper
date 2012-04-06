@@ -1,0 +1,141 @@
+<?php
+
+/**
+* Implentation of hook_schema().
+*/
+function artisan_schema() {
+  $schema['artisan_profiles'] = array( 
+    'description' => 'The base table for artisan profiles.', 
+    'fields' => array(
+      'artisan_id' => array( 
+        'description' => 'The primary identifier for an artisan.', 
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE, 
+      ), 
+      'first_name' => array( 
+        'description' => 'The name of the artisan.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '', 
+      ),
+      'last_name' => array( 
+        'description' => 'The name of the artisan.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '', 
+      ),                 
+      'description' => array( 
+        'description' => 'Description/story of the artisan.',
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+      ),
+      'video_link' => array(
+        'description' => 'Optional video (YouTube) link.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '', 
+      ),
+      'album_id' => array(
+        'description' =>'Id of the album where all artisan photographs are kept.', 
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0, 
+      ), 
+      'user_id' => array(
+        'description' =>'Id of the user controlling the artisan.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE
+      ), 
+      'created' =>  array(
+        'description' => 'Timestamp when the item was created.', 
+		'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ), 
+      'changed' => array(
+        'description' => 'Timestamp when the ite was most recently saved.',
+		'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'unique keys' => array(
+      'artisan_id' => array('artisan_id'),
+      'album_id' => array('album_id'), 
+    ), 
+    'primary key' => array('artisan_id'),
+    'foreign keys' => array(
+  	  'fk_album' => array(
+  	    'table' => 'photo_collection', 
+  	    'columns' => array('album_id' => 'album_id')
+      ),
+    ), 
+  ); 
+
+  $schema['photo_collection'] = array( 
+  	'description' => 'Album containing photos of an item or an artisan.', 
+   	'fields' => array(
+   	  'album_id' => array(
+   	    'description' => 'The primary identifier for an album.', 
+   	    'type' => 'serial', 
+  	    'unsigned' => TRUE,
+        'not null' => TRUE, 
+      ),
+      'photo_id' => array(
+        'description' => 'The photograph identifier.',
+        'type' => 'int', 
+        'unsigned' => TRUE, 
+        'not null' => TRUE, 
+      ),
+      'is_profile_pic' => array( 
+        'description' => 'Is this photo a profile picuture.',
+        'type' => 'int', 
+        'unsigned' => TRUE, 
+        'not null' => TRUE, 
+        'default' => 0
+      ),
+    ), 
+  	'unique keys' => array(
+      'photo_id' => array('photo_id'),
+      'album_id' => array('album_id'), 
+    ), 
+    'primary key' => array('album_id'),
+    'foreign keys' => array(
+  	  'fk_photo' => array(
+  	    'table' => 'photos', 
+  	    'columns' => array('photo_id' => 'photo_id')
+      ),
+    ),  
+  );
+  
+  $schema['photos'] = array( 
+    'description' => 'Individual photographs.', 
+    'fields' => array(  
+      'photo_id' => array( 
+        'description' => 'The primary identifier for the photo.', 
+        'type' => 'serial', 
+        'unsigned' => TRUE, 
+        'not null' => TRUE, 
+      ), 
+      'location' => array( 
+        'description' => 'The photograph URL.',
+        'type' => 'varchar', 
+        'length' => 255,
+        'not null' => TRUE, 
+      ),
+    ),
+    'unique keys' => array(
+      'photo_id' => array('photo_id')
+    ), 
+    'primary key' => array('photo_id'), 
+  );
+  
+  return $schema;
+}

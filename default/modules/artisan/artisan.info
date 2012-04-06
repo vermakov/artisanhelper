@@ -1,0 +1,11 @@
+name = Artisan
+description = Allows creation and editing of artisan profiles
+core = 7.x
+package = Artisan Helper
+files[] = artisan.module
+files[] = artisan.pages.inc
+files[] = artisan.admin.inc
+files[] = artisan.install
+files[] = artisan.controller.inc
+stylesheets[all][] = artisan.listings.css
+dependencies[] = field_ui

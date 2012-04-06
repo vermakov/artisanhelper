@@ -1,0 +1,113 @@
+<?php
+
+function artwork_schema() {
+  $schema['item_pages'] = array(
+    'description' => 'The base table for artworks.',
+    'fields' => array(
+      'item_id' => array(  
+        'description' => 'The primary identifier for an artwork.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'title' => array(
+        'description' => 'The title of this artwork.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'description' => array(
+        'description' => 'The description of this artwork.',
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+      ),
+      'short_description' => array(
+        'description' => 'The short description of this artwork to show in summaries.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'category' => array(
+        'description' => 'What type of item is it..',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'materials' => array(
+        'description' => 'What is it made out of.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'max_price' => array(
+        'description' => 'Max price of the artwork.',
+        'type' => 'float',
+        'not null' => TRUE
+      ),
+      'min_price' => array(
+        'description' => 'Min price of the artwork.',
+        'type' => 'float'
+      ),
+      'artisan_id' => array(
+        'description' => 'Id of the artisan who created the artwork.',
+        'type' => 'int',
+        'not null' => TRUE
+      ),
+      'album_id' => array(
+        'description' => 'Id of the album where photos of this artwork are stored.',
+        'type' => 'int',
+        'not null' => TRUE
+      ),
+      'etsy_id' => array(
+        'description' => 'Etsy Id of the artwork (if its an Etsy linked artwork).',
+        'type' => 'int',
+        'not null' => FALSE
+      ),
+      'status' => array(
+        'description' => 'Status of the artwork (whether its sold or not).',
+        'type' => 'int',
+        'not null' => TRUE,
+		'default' => 1,
+      ),
+      'stock_count' => array(
+        'description' => 'How many of these artworks are in stock.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'listing_date' => array(
+        'description' => 'The Unix timestamp when the artwork was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'last_updated' => array(
+        'description' => 'The Unix timestamp when the artwork was most recently updated.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'unique keys' => array(
+      'item_id'     => array('item_id')
+      ),
+    'primary key' => array('item_id'),
+	'foreign keys' => array(
+  	  'fk_album' => array(
+  	    'table' => 'photo_collections', 
+  	    'columns' => array('album_id' => 'album_id')
+      ),
+	  'fk_artisans' => array(
+  	    'table' => 'artisan_profiles', 
+  	    'columns' => array('artisan_id' => 'artisan_id')
+      ),
+    ),  
+  );
+
+  return $schema;
+}

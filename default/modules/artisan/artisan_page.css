@@ -1,0 +1,112 @@
+ .profile_artworks_list {
+   list-style-type: none;
+   width: 100%;
+   padding: 0;
+   margin: 0;
+ }
+ 
+.profile_artwork_cell {
+    background-color: #FFFFFF;
+    border: 1px solid #ECECEC;
+    float: left;
+    height: 130px;
+    margin: 0 8px 14px 0;
+    padding: 6px;
+    position: relative;
+    width: 130px;
+}
+
+.similar_artisans_list_wrapper {
+  padding-left: 20px;
+}
+.similar_artisans_list {
+   list-style-type: none;
+   width: 100%;
+   padding: 10;
+   margin: 0;
+ }
+ 
+ .similar_artisans_cell{
+    background-color: #FFFFFF;
+    border: 1px solid #ECECEC;
+    float: left;
+    height: 170px;
+    margin: 5px 8px 14px 0;
+    padding: 6px;
+    position: relative;
+    width: 170px;
+}
+
+.profile_section_title {
+  font-size: 15pt;
+  font-weight: bold underline;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.artisan_items_area {
+	width: 100%;
+	padding: 10px;
+	/* border: solid orange 1px; */
+}
+
+.profile_artworks_wrapper {
+  width: 100%;
+}
+
+.artisan_profile_page {
+	width: 100%;
+	/* border: solid black 1px; */
+}
+
+.profile_left_column {
+	width: 50%;
+	//background-color: blue;
+	float: left;
+}
+
+.profile_right_column {
+	width: 50%;
+	/* background-color: green; */
+	float: left;
+}
+
+.profile_footer_area {
+	width: 100%;
+	float: left;
+}
+
+.profile_image_area {
+	width: 100%;
+	padding-top:20px;
+	/* border: solid orange 1px; */
+}
+
+.profile_video_area iframe{
+  padding-left: 4%;
+}
+
+.profile_video_area {
+	width: 100%;
+	padding-top: 20px;
+	/* border: solid orange 1px; */
+}
+
+.profile_become_artisan_helper {
+	width: 100%;
+	height: 200px;
+	border: solid orange 1px;
+}
+
+
+.personal_info_area {
+	width: 100%;
+	/* border: solid orange 1px; */
+	padding: 20px;
+	padding-bottom: 50px;
+}
+
+.profile_similar_artisans {
+	width: 100%;
+	/* border: solid orange 1px; */
+}

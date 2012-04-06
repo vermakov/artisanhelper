@@ -1,0 +1,176 @@
+.hs_container {
+    border: 2px solid #FFFFFF;
+    box-shadow: 1px 1px 3px #222222;
+    clear: both;
+    cursor: pointer;
+    height: 471px;
+    overflow: hidden;
+    position: relative;
+    width: 1352px;
+}
+.hs_container .hs_area {
+    overflow: hidden;
+    position: absolute;
+}
+.hs_area img {
+    float: left;
+    display: none;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.hs_area img.hs_visible {
+    display: block;
+    z-index: 200;
+}
+
+.hs_area1a img,.hs_area1b img {
+	height: 100%;
+	max-width: none;
+}
+
+.hs_area2a img,.hs_area2b img {
+	height: 100%;
+	max-width: none;
+}
+.hs_area3a img,.hs_area3b img {
+	height: 100%;
+	max-width: none;
+}
+.hs_area4a img,.hs_area4b img {
+	width: 100%;
+	max-height: none;
+}
+.hs_area5a img,.hs_area5b img {
+	width: 100%;
+	max-height: none;
+}
+.hs_area6a img,.hs_area6b img {
+	height: 100%;
+	max-width: none;
+}
+.hs_area7a img,.hs_area7b img {
+	width: 100%;
+	max-height: none;
+}
+.boxcaption{
+	float: left;
+	position: absolute;
+	background: #000;
+	z-index: 205;
+	display: none;
+	opacity: .8;
+	/* For IE 5-7 */
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+	/* For IE 8 */
+	-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+}
+
+.artisancover{
+	height: 30px;
+	font-size:12pt;
+	padding:4px;
+	padding-left:10px;
+	width: 100%;
+}
+
+.descriptioncover {
+	font-size:12pt;
+	padding:4px;
+	padding-left:10px;
+	width: 100%;
+	padding-left:10px;
+}
+
+.pricecover{
+	font-size:16pt;
+	padding:4px;
+	padding-left:10px;
+	
+}
+
+ 
+.hs_area1a {
+    height: 334px;
+    left: 0;
+    top: 0;
+    width: 224px;
+}
+.hs_area1b {
+    height: 334px;
+    left: 226px;
+    top: 0;
+    width: 224px;
+}
+.hs_area2a {
+    height: 166px;
+    left: 451px;
+    top: 0;
+    width: 225px;
+}
+.hs_area2b {
+    height: 166px;
+    left: 677px;
+    top: 0;
+    width: 225px;
+}
+.hs_area3a {
+    height: 167px;
+    left: 451px;
+    top: 167px;
+    width: 225px;
+}
+.hs_area3b {
+    height: 167px;
+    left: 677px;
+    top: 167px;
+    width: 225px;
+}
+.hs_area4a {
+    height: 135px;
+    left: 0;
+    top: 335px;
+    width: 167px;
+}
+.hs_area4b {
+    height: 135px;
+    left: 168px;
+    top: 335px;
+    width: 168px;
+}
+.hs_area5a {
+    height: 135px;
+    left: 337px;
+    top: 335px;
+    width: 338px;
+}
+.hs_area5b {
+    height: 135px;
+    left: 677px;
+    top: 335px;
+    width: 336px;
+}
+.hs_area6a {
+    height: 334px;
+    left: 903px;
+    top: 0;
+    width: 224px;
+}
+.hs_area6b {
+    height: 334px;
+    left: 1127px;
+    top: 0;
+    width: 224px;
+}
+.hs_area7a {
+    height: 135px;
+    left: 1014px;
+    top: 335px;
+    width: 167px;
+}
+.hs_area7b {
+    height: 135px;
+    left: 1183px;
+    top: 335px;
+    width: 167px;
+}

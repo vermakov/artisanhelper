@@ -1,0 +1,10 @@
+name = Artwork
+description = Module installs entity for storing artworks.
+core = 7.x
+package = Artisan Helper
+files[] = artwork.module
+files[] = artwork.pages.inc
+files[] = artwork.install
+files[] = artwork.controller.inc
+stylesheets[all][] = listings.css
+dependencies[] = field_ui

@@ -1,0 +1,551 @@
+<?php
+
+define('artwork_LIST_PER_PAGE',15);
+
+/**
+ * Implements hook_block_info().
+ */
+function artwork_block_info(){
+  $blocks = array();
+
+  // The array key defines the $delta parameter used in all
+  // other block hooks.
+  $blocks['list_artworks'] = array(
+    // The name of the block on the blocks administration page.
+    'info' => t('List of artworks'),
+  );
+  
+  $blocks['front_page_slider'] = array(
+	'info' => t('Slider of artisans/artworks.'),
+  );
+  
+  return $blocks; 
+}
+
+
+/**
+ * Returns a list of artworks.
+ *
+ * @param $number
+ *   The number of artworks to return.
+ * @return
+ *   A result set object containing the list of artworks.
+ */
+function artwork_list_artworks($number) {
+  // Use the Database API to retrieve our data.
+  $query = db_select('item_pages', 'artworks')
+    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
+    ->range(0, $number)
+    ->execute();
+
+  return $query;
+}
+
+function artworks_get_artisan_artworks($artisan_id) {
+  // Use the Database API to retrieve our data.
+  $query = db_select('item_pages', 'artworks')
+    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
+    ->condition('artisan_id',$artisan_id)
+    ->execute();
+
+  return $query;
+}
+
+/**
+ *  Implements hook_theme().
+ */
+function artwork_theme($existing, $type, $theme, $path) { 
+  return array(
+  	'artwork_list_profile' => array(
+  	  'variables' => array(
+  	    'node' => NULL,
+        'file_info' => NULL,
+      ), 
+      'template' => 'artwork-list-profile', 
+    ),
+    'item_list__artwork' => array(
+      'render element' => 'items',
+    ), 
+    'artwork_front_page_slider' => array(
+      'render element' => 'items',
+    ), 
+	'artwork_teaser' => array(
+      'variables' => array('title', 'price', 'image_uri','artisan_id','artisan_name'),
+      'template' => 'artwork-teaser',
+    ),
+  );
+}
+
+/**
+ * Preprocesses artwork profile variables.
+ */
+function template_preprocess_artwork_list_profile(&$variables) {
+  $node = $variables['node'];
+  
+  $variables['title'] = array(
+    '#type' => 'link',
+    '#title' => $node->title,
+    '#href' => 'artwork/' . $node->item_id,
+  );
+  
+  $variables['image_uri'] = '';
+  
+  if($variables['file_info']){
+    $variables['image_uri'] = $variables['file_info']->uri;
+  }
+  
+  $variables['created'] = $node->listing_date;
+  $variables['date'] = format_date($node->listing_date,'custom','F d, Y');
+  $variables['description'] = $node->description;
+  $variables['album_id'] = $node->album_id;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function artwork_block_view($delta = '') {
+  // Create an empty block.
+  $block = array(
+    'subject' => '',
+    'content' => '',
+  );
+  
+  if($delta == 'front_page_slider') {
+    if(user_access('access content')){
+		$items = array();
+		$artisanList = array();
+		
+		// Retrieve the recently added artworks
+		$artworks = artwork_list_artworks(100);
+		
+		$artisans = artisan_list_artisans(100);
+		
+		foreach($artisans as $single_artisan) {
+		  $artisanList[$single_artisan->artisan_id]['artisan'] = $single_artisan;
+		  $artisanList[$single_artisan->artisan_id]['artworks'] = array();
+		}
+		
+		foreach($artworks as $item) {
+		  array_push($artisanList[$item->artisan_id]['artworks'], $item);
+		}
+		/*foreach($artisanList as $single_artisan)
+        {
+		  // Load image file link
+          $items[] = array(
+            'data' => array( 
+              '#theme' => 'artwork_list_profile',
+              '#node' => $single_artisan,
+              '#artisan_file_info' => file_load($single_artisan->album_id),
+			  '#artwork_file_info' => file_load($single_artisan['artworks'][0]->album_id),
+            ),
+            'class' => array('artwork-'.$single_artisan->artisan_id),
+          );
+        }*/
+		// Theme the list of artworks and artisans
+		$block['content']['list'] = array(
+		  '#theme' => 'artwork_front_page_slider',
+		  '#items' =>  $artisanList,
+		  '#attached' => array(
+		    'js' => array( drupal_get_path('module','artwork') . '/slider.js'),
+		  ),
+		);
+		$block['content']['#attached']['css'][] = drupal_get_path('module','artwork') . '/slider.css';
+	}
+  }else if($delta == 'list_artworks') {
+    // Set block title
+    $block['subject'] = 'List of artworks';
+	
+
+    // Check if the user can access content.
+    if(user_access('access content')){
+      // Retrieve the recently added artworks
+      $results = artwork_list_artworks(artwork_LIST_PER_PAGE);
+	  
+	  // Create links for each artwork
+      $items = array();
+      
+      foreach($results as $single_artwork)
+      {
+		// Load image file link
+        $items[] = array(
+          'data' => array( 
+            '#theme' => 'artwork_list_profile',
+            '#node' => $single_artwork,
+            '#file_info' => file_load($single_artwork->album_id),
+          ),
+          'class' => array('artwork-'.$single_artwork->item_id),
+        );
+      }
+      if(!empty($items)) {
+        // Theme the list of artworks
+        $block['content']['list'] = array(
+          '#theme' => 'item_list__artwork',
+          '#items' =>  $items,
+          '#pre_render' => array('artwork_list_profile_child_render'),
+        );
+        $block['content']['more'] = array(
+          '#theme' => 'more_link',
+          '#url' => 'blog',
+          '#title' => t('Read the latest blog entries.'),
+        );
+        $block['content']['#attached']['css'][] = drupal_get_path('module','single_blog') . '/single-blog-post.css';
+      }
+    }
+  }
+  return $block;
+}
+
+function theme_artwork_front_page_slider(&$variables)
+{
+  $output = '';
+
+  $output .= '<div id="hs_container" class="hs_container">';
+  
+  $nItems = count($variables['items']['#items']);
+  
+  $artisanIds = array_keys($variables['items']['#items']);
+  
+  for($i = 1;$i <= 7;$i+=1) {
+    if($i > $nItems) {
+	  $i = rand(1,$nItems);
+	}
+	
+    $item = $variables['items']['#items'][$artisanIds[$i-1]];
+    
+    $artisan_file_info = file_load($item['artisan']->album_id);
+    $artwork_file_info = file_load($item['artworks'][0]->album_id);
+	
+    $output .= '      <div class="hs_area hs_artisan hs_area' . $i . 'a">';
+    $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->first_name . ' ' . $item['artisan']->last_name . '</div></a>';
+	$output .= '	  </div>';
+    $output .= '      <div class="hs_area hs_artwork hs_area' . $i . 'b">';
+    $output .= '		<a href="http://www.etsy.com/listing/' . $item['artworks'][0]->etsy_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+    $output .= '      </div>';
+  }
+  
+  $output .= '	</div>';
+  
+  
+
+  return $output;
+}
+
+function theme_item_list__artwork(&$variables)
+{
+  $items = $variables['items']['#items'];
+  $nItems = count($items);
+  
+  $output = '';
+  $currentItem = 0;
+  
+  if($nItems > 0) {
+    $output .= "<table class='artwork-item-slider'>";
+    for($row = 0;$row < 2;$row++) {
+      $output .= "<tr class='artwork-item-row-" . $row . "'>";
+      for($column = 0;$column < 3;$column++) {
+        $output .= "<td class='artwork-item-cell-" . $column . "'>" . $items[$currentItem]['data'] . "</td>";
+        $currentItem++;
+        // Check if we have any more items, if not we are done.
+        if($currentItem >= $nItems) {
+          break;
+        }
+      }
+      $output .= "</tr>";
+      
+      // Check if we have any more items, if not we are done.
+      if($currentItem >= $nItems) {
+        break;
+      }
+    }
+    $output .= "</table>";
+  }
+  
+  return $output;  
+}
+
+/**
+ * Render the child elements of theme_item_list() before its * data is themed.
+ */
+function artwork_list_profile_child_render($elements) {
+  foreach (array_keys($elements['#items']) AS $key) { 
+    // Take the renderable array that we set in 
+    // single_blog_block_view() and render it into the string 
+    // that theme_item_list() expects. 
+    if (is_array($elements['#items'][$key]['data'])) { 
+      $elements['#items'][$key]['data'] = drupal_render($elements['#items'][$key]['data']); 
+    } 
+  } 
+  return $elements;
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function artwork_entity_info() {
+  $return['artwork'] = array(
+    'label' => t('artwork Profile'),
+	'controller class' => 'ArtworkEntityController',
+	'views controller class' => 'EntityDefaultViewsController',
+    'base table' => 'item_pages',
+    'uri callback' => 'artwork_uri',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+      'id' => 'item_id',
+      'label callback' => 'artwork_full_name',
+     ),
+    'static cache' => TRUE,
+    'view modes' => array(
+      'full' => array(
+        'label' => t('Full content'),
+        'custom settings' => FALSE,
+      ),
+      'teaser' => array(
+        'label' => t('Teaser'),
+        'custom settings' => FALSE,
+      ),
+    ),
+  );
+  
+  $return['artwork']['bundles']['artwork'] = array( 
+	'label' => 'artwork Profile', 
+	'admin' => array( 
+	  'path' => 'admin/structure/artworks', 
+	  'real path' => 'admin/structure/artworks', 
+	  'access arguments' => array('administer artworks'),
+	), 
+  ); 
+  
+  return $return;
+}
+
+/**
+ * Entity uri callback.
+ */
+function artwork_uri($artwork) {
+  return array(
+    'path' => 'artwork/' . $artwork->item_id,
+  );
+}
+
+/**
+ * Entity instance label callback.
+ */
+function artwork_full_name($artwork) {
+	return array(
+		'label' => $artwork->title,
+	);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function artwork_menu() {
+/*
+  $items['artwork/all'] = array(
+    'title' => 'All Artworks',
+    'page callback' => 'artwork_page_show_all_artworks',
+    'access arguments' => array('view artworks'),
+    'weight' => 1,
+    'menu_name' => 'management',
+    'file' => 'artwork.pages.inc',
+  );
+   */
+  $items['admin/structure/artworks'] = array(
+    'title' => 'Artwork Profile Manager',
+    'description' => 'Manage artworks.',
+    'page callback' => 'artwork_admin_info_page',
+	'access arguments' => array('administer artworks'),
+    'file' => 'artwork.admin.inc',
+  );
+ 
+  $items['admin/structure/artworks/view'] = array(
+    'title' => 'View',
+    'type' => MENU_LOCAL_TASK,
+  );
+  
+  $items['artwork/add'] = array(
+    'title' => 'Add new artwork',
+    'page callback' => 'artwork_add',
+    'access arguments' => array('create artworks'),
+    'weight' => 1,
+    'menu_name' => 'management',
+    'file' => 'artwork.pages.inc',
+  );
+  
+  $items['artwork/%artwork'] = array(
+    'title callback' => 'artwork_page_title',
+    'title arguments' => array(1),
+    'page callback' => 'artwork_page_view',
+    'page arguments' => array(1),
+    'access arguments' => array('view artworks'),
+    'type' => MENU_CALLBACK,
+    'file' => 'artwork.pages.inc',
+  );
+  
+  $items['artwork/%artwork/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  
+  $items['artwork/%artwork/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'artwork_page_edit',
+    'page arguments' => array(1),
+    'access arguments' => array('update artworks'),
+    'weight' => 0,
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'file' => 'artwork.pages.inc',
+  );
+  
+  $items['artwork/%artwork/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('artwork_delete_confirm', 1),
+    'access arguments' => array('delete artworks'),
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE,
+    'file' => 'artwork.pages.inc',
+  );
+  
+  $items['artwork/recent'] = array(
+    'title' => 'Recently added artworks',
+    'page callback' => 'artwork_page_show_all_artworks',
+    'access arguments' => array('view artworks'),
+    'file' => 'artwork.pages.inc',
+  );
+  
+  return $items;
+}
+
+/**
+ * Sets the page title based on the specified artwork.
+ *
+ * @param $artwork
+ *   The artwork object.
+ */
+function artwork_page_title($artwork) {
+  return $artwork->title;
+}
+
+
+/**
+ * Load artwork entities from the database.
+ *
+ * This function should be used whenever you need to load more than one artwork
+ * from the database. artworks are loaded into memory and will not require
+ * database access if loaded again during the same page request.
+ *
+ * @see entity_load()
+ *
+ * @param $aids
+ *   An array of artwork IDs.
+ * @param $conditions
+ *   An array of conditions on the {artwork} table in the form 'field' => $value.
+ * @param $reset
+ *   Whether to reset the internal entity_load cache.
+ *
+ * @return
+ *   An array of node objects indexed by nid.
+ */
+function artwork_load_multiple($aids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('artwork', $aids, $conditions, $reset);
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function artwork_permission() {
+  return array(
+    'administer artworks' =>  array(
+      'title' => t('Administer artworks'),
+    ),
+    'create artworks' =>  array(
+      'title' => t('Create artworks'),
+    ),
+    'update artworks' =>  array(
+      'title' => t('Update artworks'),
+    ),
+    'view artworks' =>  array(
+      'title' => t('View artworks'),
+    ),
+    'delete artworks' =>  array(
+      'title' => t('Delete artworks'),
+    ),
+  );
+}
+
+/**
+ * Load an artwork object from the database.
+ *
+ * @param $aid
+ *   The artwork ID.
+ * @param $vid
+ *   The revision ID.
+ * @param $reset
+ *   Whether to reset the artwork_load_multiple cache.
+ *
+ * @return
+ *   A fully-populated node object.
+ */
+function artwork_load($aid = NULL, $vid = NULL, $reset = FALSE) {
+  $aids = (isset($aid) ? array($aid) : array());
+  $conditions = null;
+  $artwork = artwork_load_multiple($aids, $conditions, $reset);
+  return $artwork ? reset($artwork) : FALSE;
+}
+
+/**
+ * Save an artwork.
+ *
+ * @param $artwork
+ *   The artwork to be saved.
+ * @return
+ *   The saved artwork, now with an aid if necessary.
+ */
+function artwork_save($artwork) {
+  return entity_get_controller('artwork')->save($artwork);
+}
+
+/**
+ * Returns an initialized artwork object.
+ *
+ * @param $type
+ *   The machine-readable type of the artwork.
+ *
+ * @return
+ *   An artwork object with all default fields initialized.
+ */
+function artwork_new($type = '') {
+  return entity_get_controller('artwork')->create($type);
+}
+
+
+/**
+ * Deletes an artwork by ID.
+ *
+ * @param $aid
+ *   The ID of the product to delete.
+ *
+ * @return
+ *   TRUE on success, FALSE otherwise.
+ */
+function artwork_delete($aid) {
+  return artwork_delete_multiple(array($aid));
+}
+
+/**
+ * Deletes multiple artworks by ID.
+ *
+ * @param $aids
+ *   An array of artwork IDs to delete.
+ *
+ * @return
+ *   TRUE on success, FALSE otherwise.
+ */
+function artwork_delete_multiple($aids) {
+  return entity_get_controller('artwork')->delete($aids);
+}
