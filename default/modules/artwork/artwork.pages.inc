@@ -352,7 +352,7 @@ function artwork_form_submit($form, &$form_state) {
     $artwork->listing_date = REQUEST_TIME;
   }
   
-  $artwork->last_updated = REQUST_TIME;
+  $artwork->last_updated = REQUEST_TIME;
   
   // Notify field widgets.
   field_attach_submit('artwork', $artwork, $form, $form_state);
