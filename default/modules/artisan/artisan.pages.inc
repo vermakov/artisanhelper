@@ -151,7 +151,7 @@ function artisan_form_submit($form, &$form_state) {
     $artisan->listing_date = REQUEST_TIME;
   }
   
-  $artisan->last_updated = REQUST_TIME;
+  $artisan->last_updated = REQUEST_TIME;
   
   // Notify field widgets.
   field_attach_submit('artisan', $artisan, $form, $form_state);
