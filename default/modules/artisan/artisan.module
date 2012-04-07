@@ -30,7 +30,7 @@ function artisan_block_info(){
 function artisan_list_artisans($number) {
   // Use the Database API to retrieve our data.
   $query = db_select('artisan_profiles', 'artisans')
-    ->fields('artisans', array('artisan_id', 'first_name', 'last_name', 'description','video_link','created','changed', 'album_id'))
+    ->fields('artisans', array('artisan_id', 'name', 'description','video_link','created','changed', 'album_id'))
     ->orderBy('created', 'DESC')
     ->range(0, $number)
     ->execute();
@@ -41,7 +41,7 @@ function artisan_list_artisans($number) {
 function artisan_get_similar_artisans($artisan_id,$number) {
   // Use the Database API to retrieve our data.
   $query = db_select('artisan_profiles', 'artisans')
-    ->fields('artisans', array('artisan_id', 'first_name', 'last_name', 'description','video_link','created','changed', 'album_id'))
+    ->fields('artisans', array('artisan_id', 'name', 'country', 'description','video_link','created','changed', 'album_id'))
 	->condition('artisan_id',$artisan_id,'<>')
     ->orderBy('created', 'DESC')
     ->range(0, $number)
@@ -53,7 +53,7 @@ function artisan_get_similar_artisans($artisan_id,$number) {
 function artisan_get_by_id($id) {
  // Use the Database API to retrieve our data.
   $query = db_select('artisan_profiles', 'artisans')
-    ->fields('artisans', array('artisan_id', 'first_name', 'last_name'))
+    ->fields('artisans', array('artisan_id', 'name'))
     ->condition('artisan_id',$id)
     ->execute();
   
@@ -71,12 +71,12 @@ function artisan_get_full_list() {
   
   // Use the Database API to retrieve our data.
   $query = db_select('artisan_profiles', 'artisans')
-    ->fields('artisans', array('artisan_id', 'first_name', 'last_name'))
-    ->orderBy('first_name')
+    ->fields('artisans', array('artisan_id', 'name'))
+    ->orderBy('name')
     ->execute();
   
   foreach($query as $single_artisan) {
-    $artisans[$single_artisan->artisan_id] = $single_artisan->first_name . ' ' . $single_artisan->last_name;
+    $artisans[$single_artisan->artisan_id] = $single_artisan->name;
   }
   
   return $artisans;
@@ -167,7 +167,7 @@ function template_preprocess_artisan_list_profile(&$variables) {
   
   $variables['title'] = array(
     '#type' => 'link',
-    '#title' => $node->first_name . ' ' . $node->last_name,
+    '#title' => $node->name,
     '#href' => 'artisan/' . $node->artisan_id,
   );
   
@@ -338,7 +338,7 @@ function artisan_uri($artisan) {
  */
 function artisan_full_name($artisan) {
 	return array(
-		'label' => $artisan->first_name.' '.$artisan->last_name,
+		'label' => $artisan->name,
 	);
 }
 
@@ -423,7 +423,7 @@ function artisan_menu() {
  *   The artisan object.
  */
 function artisan_page_title($artisan) {
-  return $artisan->first_name.' '.$artisan->last_name;
+  return $artisan->name;
 }
 
 /**

@@ -13,11 +13,32 @@ function artisan_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE, 
       ), 
-      'first_name' => array( 
+      'name' => array( 
         'description' => 'The name of the artisan.',
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
+        'default' => '', 
+      ),
+      'city' => array( 
+        'description' => 'City',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '', 
+      ),
+      'country' => array( 
+        'description' => 'Country',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '', 
+      ),
+      'local_location' => array( 
+        'description' => 'Where can you find them (Address, Cross street, Beach)?',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
         'default' => '', 
       ),
       'last_name' => array( 
@@ -26,7 +47,8 @@ function artisan_schema() {
         'length' => 32,
         'not null' => TRUE,
         'default' => '', 
-      ),                 
+      ),
+                 
       'description' => array( 
         'description' => 'Description/story of the artisan.',
         'type' => 'text',

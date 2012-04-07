@@ -21,7 +21,7 @@ function artisan_add() {
  *   The artisan object to edit.
  */
 function artisan_page_edit($artisan) {
-  drupal_set_title(t('<em>Edit @title', array('@title' => $artisan->first_name.' '.$artisan->last_name)), PASS_THROUGH);
+  drupal_set_title(t('<em>Edit @title', array('@title' => $artisan->name)), PASS_THROUGH);
 
   return drupal_get_form('artisan_form', $artisan);
 }
@@ -44,20 +44,37 @@ function artisan_form($form, &$form_state, $artisan) {
   $form_state['artisan'] = $artisan;
   
   // Common fields. We don't have many.
-  $form['first_name'] = array(
+  $form['name'] = array(
     '#type' => 'textfield',
-    '#title' => t('First Name'),
-    '#weight' => -10,
+    '#title' => t('Name'),
+    '#weight' => -12,
     '#required' => TRUE,
-    '#default_value' => $artisan->first_name,
+    '#default_value' => $artisan->name,
   );
   
-  $form['last_name'] = array(
+  $form['city'] = array(
     '#type' => 'textfield',
-    '#title' => t('Last Name'),
-    '#weight' => -9,
+    '#title' => t('City'),
+    '#weight' => -11,
     '#required' => TRUE,
-    '#default_value' => $artisan->last_name,
+    '#default_value' => $artisan->city,
+  );
+  
+  $form['country'] = array(
+    '#type' => 'select',
+    '#title' => t('Country'),
+    '#weight' => -10,
+    '#required' => TRUE,
+	'#options' => array('MX' => 'Mexico', 'UZ' => 'Uzbekistan'),
+    '#default_value' => $artisan->country,
+  );
+  
+  $form['local_location'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Where to find (Address, Beach, other Description)'),
+    '#weight' => -9,
+    '#required' => False,
+    '#default_value' => $artisan->local_location,
   );
   
   $form['description'] = array(
@@ -123,11 +140,19 @@ function artisan_form_submit($form, &$form_state) {
   file_move($file_info,'public://',FILE_EXISTS_RENAME);
 
   $artisan->description = $form_state['values']['description'];
-  $artisan->first_name = $form_state['values']['first_name'];
-  $artisan->last_name = $form_state['values']['last_name'];
+  $artisan->name = $form_state['values']['name'];
+  $artisan->city = $form_state['values']['city'];
+  $artisan->country = $form_state['values']['country'];
+  $artisan->local_location = $form_state['values']['local_location'];
   $artisan->album_id = $file_info->fid;//$form_state['values']['album_id'];
   $artisan->video_link = $form_state['values']['video_link'];
-    
+  
+  if(empty($artisan->listing_date)) {
+    $artisan->listing_date = REQUEST_TIME;
+  }
+  
+  $artisan->last_updated = REQUST_TIME;
+  
   // Notify field widgets.
   field_attach_submit('artisan', $artisan, $form, $form_state);
 
@@ -193,7 +218,7 @@ function template_preprocess_profile_similar_artisans(&$variables) {
   $artisans_to_display = array();
   
   foreach($similar_artisans as $item) {
-    $name = check_plain($item->first_name . ' ' . $item->last_name);
+    $name = check_plain($item->name);
 	if(strlen($name) > MAX_ARTISAN_NAME_LENGTH) {
   	  $name = substr($name,0,MAX_ARTISAN_NAME_LENGTH) . '...';
 	}
@@ -250,7 +275,7 @@ function template_preprocess_profile_info_area(&$variables) {
   // Find the image URI.
   $image_file = file_load($artisan->album_id);
 	
-  $name = check_plain($artisan->first_name . ' ' . $artisan->last_name);
+  $name = check_plain($artisan->name);
 	
   $variables['name'] = $name;
   $variables['video_link'] = $artisan->video_link;
@@ -274,7 +299,7 @@ function artisan_page_view($artisan, $view_mode = 'full') {
   
   if ($view_mode == 'teaser') {
     $artisan->content['title'] = array(
-      '#markup' => filter_xss($artisan->first_name.' '.$artisan->last_name),
+      '#markup' => filter_xss($artisan->name),
       '#weight' => -5,
     );
 	field_attach_prepare_view('artisan', array($artisan->artisan_id => $artisan), $view_mode);
@@ -370,7 +395,7 @@ function artisan_delete_confirm($form, &$form_state, $artisan) {
   // Always provide entity id in the same form key as in the entity edit form.
   $form['artisan_id'] = array('#type' => 'value', '#value' => $artisan->artisan_id);
   return confirm_form($form,
-    t('Are you sure you want to delete %title?', array('%title' => $artisan->first_name.' '.$artisan->last_name)),
+    t('Are you sure you want to delete %title?', array('%title' => $artisan->name)),
     'artisan/' . $artisan->artisan_id,
     t('This action cannot be undone.'),
     t('Delete'),
@@ -385,9 +410,9 @@ function artisan_delete_confirm_submit($form, &$form_state) {
   if ($form_state['values']['confirm']) {
     $artisan = artisan_load($form_state['values']['artisan_id']);
     artisan_delete($form_state['values']['artisan_id']);
-    watchdog('artisan', 'Deleted %title.', array('%title' => $artisan->first_name.' '.$artisan->last_name));
+    watchdog('artisan', 'Deleted %title.', array('%title' => $artisan->name));
 
-    drupal_set_message(t('%title has been deleted.', array('%title' => $artisan->first_name.' '.$artisan->last_name)));
+    drupal_set_message(t('%title has been deleted.', array('%title' => $artisan->name)));
   }
 
   $form_state['redirect'] = '<front>';

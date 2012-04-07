@@ -239,7 +239,11 @@ function theme_artwork_front_page_slider(&$variables)
     $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->first_name . ' ' . $item['artisan']->last_name . '</div></a>';
 	$output .= '	  </div>';
     $output .= '      <div class="hs_area hs_artwork hs_area' . $i . 'b">';
-    $output .= '		<a href="http://www.etsy.com/listing/' . $item['artworks'][0]->etsy_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+	if(empty($item['artworks'][0]->etsy_id) || $item['artworks'][0]->etsy_id == 0) {
+	  $output .= '		<a href="http://www.etsy.com/listing/' . $item['artworks'][0]->etsy_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+	} else {
+	  $output .= '		<a href="http://www.ebay.com/itm/' . $item['artworks'][0]->ebay_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+	}
     $output .= '      </div>';
   }
   
