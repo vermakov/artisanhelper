@@ -89,6 +89,7 @@ class ArtworkEntityController extends EntityAPIController {
       'etsy_id' => '',
 	  'ebay_id' => '',
 	  'tags' => '',
+	  'size' => '',
 	  'short_description' => '',
 	  'currency' => 'USD'
 	);
