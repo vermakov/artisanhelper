@@ -34,7 +34,7 @@ function artwork_block_info(){
 function artwork_list_artworks($number) {
   // Use the Database API to retrieve our data.
   $query = db_select('item_pages', 'artworks')
-    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
+    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'ebay_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
     ->range(0, $number)
     ->execute();
 
@@ -44,7 +44,7 @@ function artwork_list_artworks($number) {
 function artworks_get_artisan_artworks($artisan_id) {
   // Use the Database API to retrieve our data.
   $query = db_select('item_pages', 'artworks')
-    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
+    ->fields('artworks', array('item_id', 'artisan_id', 'etsy_id', 'ebay_id', 'title', 'listing_date','description', 'short_description','max_price','category','materials', 'stock_count', 'album_id'))
     ->condition('artisan_id',$artisan_id)
     ->execute();
 
@@ -230,7 +230,7 @@ function theme_artwork_front_page_slider(&$variables)
     $artisan_file_info = file_load($item['artisan']->album_id);
     $artwork_file_info = file_load($item['artworks'][0]->album_id);
 	
-    $output .= '      <div class="hs_area hs_artisan hs_area' . $i . 'a">';
+    $output .= '      <div class="hs_area hs_artisan hs_area' . $indx . 'a">';
     $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->name . '</div></a>';
 	$output .= '	  </div>';
     $output .= '      <div class="hs_area hs_artwork hs_area' . $i . 'b">';
