@@ -60,6 +60,7 @@ function artwork_form($form, &$form_state, $artwork) {
 	  '#type' => 'select',
       '#title' => t('Currency'),
       '#options' => array("USD" => "USD"),
+	  '#weight' => -9,
 	  '#default_value' => $artwork->currency,
 	),
     'materials' => array(
@@ -68,6 +69,13 @@ function artwork_form($form, &$form_state, $artwork) {
       '#weight' => -8,
       '#required' => TRUE,
       '#default_value' => $artwork->materials,
+    ),
+    'size' => array(
+      '#type' => 'textfield',
+      '#title' => t('Size'),
+      '#weight' => -8,
+      '#required' => TRUE,
+      '#default_value' => $artwork->size,
     ),
     'category' => array(
       '#type' => 'textfield',
@@ -344,7 +352,7 @@ function artwork_form_submit($form, &$form_state) {
   $artwork->artisan_id = $form_state['values']['artisan_id'];
   $artwork->materials = $form_state['values']['materials'];
   $artwork->category = $form_state['values']['category'];
-  
+  $artwork->size = $form_state['values']['size'];
   $artwork->etsy_id = $form_state['values']['etsy_id'];
   $artwork->ebay_id = $form_state['values']['ebay_id'];
   $artwork->stock_count = $form_state['values']['stock_count'];

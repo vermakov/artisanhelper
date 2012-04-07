@@ -67,6 +67,13 @@ function artwork_schema() {
         'not null' => TRUE,
         'default' => 'USD',
       ),
+      'size' => array(
+        'description' => 'What are the dimensions of this item.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
       'artisan_id' => array(
         'description' => 'Id of the artisan who created the artwork.',
         'type' => 'int',

@@ -226,7 +226,7 @@ function theme_artwork_front_page_slider(&$variables)
     $artwork_file_info = file_load($item['artworks'][0]->album_id);
 	
     $output .= '      <div class="hs_area hs_artisan hs_area' . $i . 'a">';
-    $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->first_name . ' ' . $item['artisan']->last_name . '</div></a>';
+    $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->name . '</div></a>';
 	$output .= '	  </div>';
     $output .= '      <div class="hs_area hs_artwork hs_area' . $i . 'b">';
 	if(empty($item['artworks'][0]->etsy_id) || $item['artworks'][0]->etsy_id == 0) {
