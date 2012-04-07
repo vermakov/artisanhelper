@@ -71,14 +71,11 @@
   margin: 4px 15px 0 0;
 }
 .ia-r .field-type-image {
-  float: right;
   clear: right;
   margin: 4px 0 0 15px;
 }
-.ia-l .field-type-image,
-.ia-r .field-type-image,
-.ia-c .field-type-image {
-  text-align: center;
+div.image-widget-data {
+  width:380px;
 }
 .ia-l .field-type-image  img,
 .ia-r .field-type-image  img,
