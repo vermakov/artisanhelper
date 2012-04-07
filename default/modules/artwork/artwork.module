@@ -210,9 +210,11 @@ function theme_artwork_front_page_slider(&$variables)
     return "<H1> No artisans registered. </H1>";
   }
   
-  for($i = 1;$i <= 7;$i+=1) {
-    if($i > $nItems) {
+  for($indx = 1;$indx <= 7;$indx+=1) {
+    if($indx > $nItems) {
 	  $i = rand(1,$nItems);
+	} else {
+	  $i = $indx;
 	}
 	
     $item = $variables['items']['#items'][$artisanIds[$i-1]];
