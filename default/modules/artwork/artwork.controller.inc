@@ -55,7 +55,7 @@ class ArtworkEntityController extends EntityAPIController {
 											'item_id' => check_plain($entity->item_id),
 											'image_uri' => $image_file->uri,
 											'artisan_id' => check_plain($entity->artisan_id),
-											'artisan_name' => check_plain($artisan->first_name . ' ' . $artisan->last_name),
+											'artisan_name' => check_plain($artisan->name),
 											)));
 	} else if($view_mode == 'full') {
 	
@@ -79,136 +79,7 @@ class ArtworkEntityController extends EntityAPIController {
     // Add values that are specific to our Model
 	
 	$values += array(
-	  'item_id' => '',
-      'title' => '',
-	  'description' => '',
-	  'artisan_id' => '',
-      'max_price' => '',
-      'category' => '',
-      'materials' => '',
-      'etsy_id' => '',
-	  'short_description' => ''
-	);
-
-    $model = parent::create($values);
-    return $model;
-  }
-}
- 
-class ArtworkController extends DrupalDefaultEntityController {
-
-  public function save($artwork) {
-    $transaction = db_transaction();
-
-    try {
-      global $user;
-
-      // Determine if we will be inserting a new artwork.
-      $artwork->is_new = empty($artwork->item_id);
-
-      // Set the timestamp fields.
-      if (empty($artwork->created)) {
-        $artwork->listing_date = REQUEST_TIME;
-      }
-      $artwork->last_updated = REQUEST_TIME;
-
-      $update_artwork = TRUE;
-
-      // Give modules the opportunity to prepare field data for saving.
-      field_attach_presave('artwork', $artwork);
-
-
-      // If this is a new artwork...
-      if ($artwork->is_new) {
-        // Save the new artwork.
-        drupal_write_record('item_pages', $artwork);
-
-        $op = 'insert';
-      }
-      else {
-        // Save the updated artwork.
-        drupal_write_record('item_pages', $artwork, 'item_id');
-
-        $op = 'update';
-      }
-
-      // Save fields.
-      $function = 'field_attach_' . $op;
-      $function('artwork', $artwork);
-
-      module_invoke_all('entity_' . $op, $artwork, 'artwork');
-
-      // Clear internal properties.
-      unset($artwork->is_new);
-
-      // Ignore slave server temporarily to give time for the saved order to be
-      // propagated to the slave.
-      db_ignore_slave();
-
-      return $artwork;
-    }
-    catch (Exception $e) {
-      $transaction->rollback();
-      watchdog_exception('artwork', $e, NULL, WATCHDOG_ERROR);
-      return FALSE;
-    }
-  }
-
-  /**
-   * Deletes multiple artworks by ID.
-   *
-   * @param $aids
-   *   An array of artwork IDs to delete.
-   * @return
-   *   TRUE on success, FALSE otherwise.
-   */
-  public function delete($aids) {
-    if (!empty($aids)) {
-      $artworks = $this->load($aids, array());
-
-      $transaction = db_transaction();
-
-      try {
-        db_delete('item_pages')
-          ->condition('item_id', $aids, 'IN')
-          ->execute();
-
-        foreach ($artworks as $item_id => $artwork) {
-          field_attach_delete('artwork', $artwork);
-        }
-
-        // Ignore slave server temporarily to give time for the
-        // saved artwork to be propagated to the slave.
-        db_ignore_slave();
-      }
-      catch (Exception $e) {
-        $transaction->rollback();
-        watchdog_exception('artwork', $e, NULL, WATCHDOG_ERROR);
-        return FALSE;
-      }
-
-      module_invoke_all('entity_delete', $artwork, 'artwork');
-
-      // Clear the page and block and artwork caches.
-      cache_clear_all();
-      $this->resetCache();
-    }
-
-    return TRUE;
-  }
-
-  /**
-   * Create a default artwork.
-   *
-   * @param $type
-   *   The machine-readable type of the artwork.
-   *
-   * @return
-   *   An artwork object with all default fields initialized.
-   */
-  public function create() {
-    return (object) array(
-      'item_id' => '',
+	'item_id' => '',
       'title' => '',
 	  'description' => '',
 	  'artisan_id' => '',
@@ -220,7 +91,9 @@ class ArtworkController extends DrupalDefaultEntityController {
 	  'tags' => '',
 	  'short_description' => '',
 	  'currency' => 'USD'
-    );
-  }
+	);
 
+    $model = parent::create($values);
+    return $model;
+  }
 }

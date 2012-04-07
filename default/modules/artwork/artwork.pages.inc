@@ -61,7 +61,7 @@ function artwork_form($form, &$form_state, $artwork) {
       '#title' => t('Currency'),
       '#options' => array("USD" => "USD"),
 	  '#default_value' => $artwork->currency,
-	},
+	),
     'materials' => array(
       '#type' => 'textfield',
       '#title' => t('Materials'),
@@ -224,46 +224,63 @@ function artwork_add_etsy_item($form, $form_state) {
   return $form['artwork_details'];
 }
 
+
 function artwork_add_ebay_item($form, $form_state) {
   
   if($match_res = preg_match('/http:\/\/www.ebay.com\/itm\/.*\/(.\d+)\?.*/i',  $_POST['ebay_link'], $matches) == 1) {
-	require_once 'EbatNs/EbatNs_ServiceProxyShopping.php';
-	require_once 'EbatNs/GetSingleItemRequestType.php';
-	require_once 'EbatNs/EbatNs_Logger.php';
+	// Define global variables
+	$s_endpoint = "http://open.api.ebay.com/shopping?";  // Shopping URL to call
+	$cellColor = "bgcolor=\"#dfefff\"";  // Light blue background used for selected items 
+	$m_endpoint = 'http://svcs.ebay.com/MerchandisingService?';  // Merchandising URL to call
+	$appid = 'GlobeIn07-490a-488d-8a54-b4956d72221';  // You will need to supply your own AppID
+	$responseEncoding = 'XML';  // Type of response we want back
 	
-	$session = new EbatNs_Session();
-	$session->setAppId('GlobeIn07-490a-488d-8a54-b4956d72221');
-	$session->setSiteId(0);
-
-	$cs = new EbatNs_ServiceProxyShopping($session);
-	//$cs->attachLogger(new EbatNs_Logger());
-
-	$req = new GetSingleItemRequestType();
-	$req->setItemID($matches[1]);
-
 	$details[] = 'Details';
 	$details[] = 'Description';
-		
-	$req->setIncludeSelector(implode(',', $details));
+	$details[] = 'ItemSpecifics';
+	$details[] = 'Variations';
+	
+    // Construct the GetSingleItem call 
+    $apicallb  = "$s_endpoint";
+    $apicallb .= "callname=GetSingleItem";
+    $apicallb .= "&version=563";
+    $apicallb .= "&appid=$appid";
+    $apicallb .= "&itemid=" . $matches[1];
+	$apicallb .= '&includeselector=' . join(",",$details);
+    $apicallb .= "&responseencoding=$responseEncoding";
+	
+    // Load the call and capture the document returned by eBay API
+    $resp = simplexml_load_file($apicallb);
+	$item_details = $resp->Item;
 
-	$res = $cs->GetSingleItem($req);
-	$item_details = $res->getItem();
+	//$item_details = $res->getItem();
+		
+	$description = html_entity_decode(str_replace("<br>","\n",(string)$item_details->Description), ENT_QUOTES, 'UTF-8');
 	
-	$description = html_entity_decode(str_replace("<br>","\n",$item_details->Description), ENT_QUOTES, 'UTF-8');
+	// Get Materials if available.
+	foreach($item_details->Variations as $variation) {
+	  if(isset($variation->Variation->VariationSpecifics->NameValueList)) {
+		foreach($variation->Variation->VariationSpecifics->NameValueList as $specifics ){
+		  if( $specifics->Name == 'Material') {
+			$form['artwork_details']['materials']['#value'] = t((string)$specifics->Value);
+		  }
+	    }
+	  }
+	}
 	
-	$form['artwork_details']['title']['#value'] = t($item_details->Title);//$res->title;// t($item_details['title']);
+	$form['artwork_details']['title']['#value'] = t((string)$item_details->Title);//$res->title;// t($item_details['title']);
 	$form['artwork_details']['description']['#value'] = $description;
-	$form['artwork_details']['price']['#value'] = $item_details->CurrentPrice->value;
-	$form['artwork_details']['currency']['#value'] = $item_details->CurrentPrice->attributeValues['currencyID'];
-	$form['artwork_details']['materials']['#value'] = '';//t($item_details['materials']);
-	$form['artwork_details']['category']['#value'] = t(array_pop(split(":",$item_details->PrimaryCategoryName)));
-	$form['artwork_details']['short_description']['#value'] = t(substr($description,0,127));
-	$form['artwork_details']['image_file_url']['#value'] = $item_details->PictureURL[0];
-	$form['artwork_details']['ebay_id']['#value'] = $item_details->ItemID;
-	$form['artwork_details']['stock_count']['#value'] = $item_details->Quantity;
-	$form['artwork_details']['tags']['#value'] = t($item_details->Tags);
+	$form['artwork_details']['price']['#value'] = (string)$item_details->CurrentPrice;
+	$form['artwork_details']['currency']['#value'] = (string)$item_details->CurrentPrice['currencyID'];
 	
-	$form['artwork_details']['#suffix'] = theme('image',array('path' => $item_details->PictureURL[0])) . "</div>";
+	$form['artwork_details']['category']['#value'] = t(array_pop(split(":",(string)$item_details->PrimaryCategoryName)));
+	$form['artwork_details']['short_description']['#value'] = t(substr($description,0,127));
+	$form['artwork_details']['image_file_url']['#value'] = (string)$item_details->PictureURL;
+	$form['artwork_details']['ebay_id']['#value'] = (string)$item_details->ItemID;
+	$form['artwork_details']['stock_count']['#value'] = (int)$item_details->Quantity;
+	$form['artwork_details']['tags']['#value'] = '';
+	
+	$form['artwork_details']['#suffix'] = theme('image',array('path' => (string)$item_details->PictureURL)) . "</div>";
   }
   
   return $form['artwork_details'];
@@ -290,7 +307,11 @@ function artwork_cache_remote_image($url) {
   $cut_url = str_ireplace("http://", "", $url);
   $cut_url = preg_replace("/^[^\/]*\//", "", $cut_url);
   $image_name = str_ireplace("/", "-", $cut_url);
-
+  $tmp = explode('?',$image_name);
+  $image_name = $tmp[0];
+  $tmp = explode('.',$image_name);
+  $image_name = md5($tmp[0]) . '.' . $tmp[1];
+  dprint_r($image_name);
   $image_path = $external_image_path . '/' . $image_name;
 
   return file_save_data($image, $image_path, FILE_EXISTS_REPLACE);
@@ -318,12 +339,21 @@ function artwork_form_submit($form, &$form_state) {
   $artwork->short_description = $form_state['values']['short_description'];
   $artwork->max_price = $form_state['values']['price'];
   $artwork->min_price = $form_state['values']['price'];
+  $artwork->currency = $form_state['values']['currency'];
+  $artwork->tags = $form_state['values']['tags'];
   $artwork->artisan_id = $form_state['values']['artisan_id'];
   $artwork->materials = $form_state['values']['materials'];
   $artwork->category = $form_state['values']['category'];
   
   $artwork->etsy_id = $form_state['values']['etsy_id'];
+  $artwork->ebay_id = $form_state['values']['ebay_id'];
   $artwork->stock_count = $form_state['values']['stock_count'];
+  
+  if(empty($artwork->listing_date)) {
+    $artwork->listing_date = REQUEST_TIME;
+  }
+  
+  $artwork->last_updated = REQUST_TIME;
   
   // Notify field widgets.
   field_attach_submit('artwork', $artwork, $form, $form_state);
