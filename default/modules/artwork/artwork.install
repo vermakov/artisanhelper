@@ -79,12 +79,14 @@ function artwork_schema() {
       ),
       'etsy_id' => array(
         'description' => 'Etsy Id of the artwork (if its an Etsy linked artwork).',
-        'type' => 'int',
-        'not null' => FALSE
+        'type' => 'varchar',
+        'length' => 255,
+		'not null' => FALSE
       ),
       'ebay_id' => array(
         'description' => 'Ebay Id of the artwork (if its an Ebay linked artwork).',
-        'type' => 'int',
+        'type' => 'varchar',
+		'length' => 255,
         'not null' => FALSE
       ),
       'status' => array(
