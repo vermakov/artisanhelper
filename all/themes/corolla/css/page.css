@@ -3,14 +3,16 @@
   clear: both;
   padding: 10px 0 0;
 }
+#menu-bar-wrapper {
+  height: 50px;
+}
 #branding {
   float: left;
-  padding: 45px 0 48px 25px;
+  padding-top:15px;
   display: table;
 }
 .region-header {
   float: right;
-  padding: 45px 25px 48px 0;
 }
 #logo {
   display: table-cell;

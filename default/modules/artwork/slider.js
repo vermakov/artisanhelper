@@ -4,7 +4,7 @@
   $(".hs_area").hover(function(){ 
   	$(".artisancover", this).stop().animate({top: $(this).height() - 30 },{queue:false,duration:200});
   	$(".pricecover", this).stop().animate({top: 0},{queue:false,duration:200});
-    $(".descriptioncover", this).stop().animate({top: $(this).height() - $(".descriptioncover",$(this)).height()},{queue:false,duration:200});
+    $(".descriptioncover", this).stop().animate({top: $(this).height() - $(".descriptioncover",$(this)).height() - 3},{queue:false,duration:200});
   }, function() {
     $(".artisancover", this).stop().animate({top:$(this).height()},{queue:false,duration:200});
     $(".pricecover", this).stop().animate({top:-40},{queue:false,duration:200});

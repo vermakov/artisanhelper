@@ -209,21 +209,38 @@ function theme_artwork_front_page_slider(&$variables)
   if(count($artisanIds) == 0) {
     return "<H1> No artisans registered. </H1>";
   }
+
+  $horizontal = array();
+  $vertical = array();
+    
+  // Create a list of horizontal artisans
+  foreach($variables['items']['#items'] as $artisan) {
+    $file_info = file_load($artisan['artisan']->album_id);
+    $image_info = image_get_info($file_info->uri);
+    if($image_info['height'] > $image_info['width']) {
+      $vertical[] = $artisan;
+    } else {
+      $horizontal[] = $artisan;
+    }
+  }
   
+  // Create a list of vertial artisans.
   for($indx = 1;$indx <= 7;$indx+=1) {
     if($indx > $nItems) {
 	  $i = rand(1,$nItems);
-	} else {
-	  $i = $indx;
-	}
-	
-    $item = $variables['items']['#items'][$artisanIds[$i-1]];
-    if(count($item['artworks']) == 0) {
-      break;
+    } else {
+      $i = $indx;
     }
-    
-	// Fail gracefully if no artworks are present 
-	if(count($item['artworks']) == 0) {
+	
+    // $item = $variables['items']['#items'][$artisanIds[$i-1]];
+    if($indx == 1 || $indx == 6) {
+      $item = $vertical[rand(1,count($vertical))-1];
+    } else {
+      $item = $horizontal[rand(1,count($horizontal))-1];
+    }
+
+    // Fail gracefully if no artworks are present 
+    if(count($item['artworks']) == 0) {
        continue;
     }
   
@@ -234,10 +251,10 @@ function theme_artwork_front_page_slider(&$variables)
     $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption">' . $item['artisan']->name . '</div></a>';
 	$output .= '	  </div>';
     $output .= '      <div class="hs_area hs_artwork hs_area' . $indx . 'b">';
-	if(empty($item['artworks'][0]->etsy_id) || $item['artworks'][0]->etsy_id == 0) {
-	  $output .= '		<a href="http://www.etsy.com/listing/' . $item['artworks'][0]->etsy_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+    if(empty($item['artworks'][0]->etsy_id) || $item['artworks'][0]->etsy_id == 0) {
+	  $output .= '		<a href="http://www.ebay.com/itm/' . $item['artworks'][0]->ebay_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' .number_format( $item['artworks'][0]->max_price,2) . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
 	} else {
-	  $output .= '		<a href="http://www.ebay.com/itm/' . $item['artworks'][0]->ebay_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . $item['artworks'][0]->max_price . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
+	  $output .= '		<a href="http://www.etsy.com/listing/' . $item['artworks'][0]->etsy_id . '/"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption">$' . number_format($item['artworks'][0]->max_price,2) . '</div><div class="descriptioncover boxcaption">' . $item['artworks'][0]->title . '</div></a>';
 	}
     $output .= '      </div>';
   }

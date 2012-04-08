@@ -38,8 +38,8 @@
 	max-width: none;
 }
 .hs_area4a img,.hs_area4b img {
-	width: 100%;
-	max-height: none;
+	height: 100%;
+	max-width: none;
 }
 .hs_area5a img,.hs_area5b img {
 	width: 100%;
@@ -50,8 +50,8 @@
 	max-width: none;
 }
 .hs_area7a img,.hs_area7b img {
-	width: 100%;
-	max-height: none;
+	height: 100%;
+	max-width: none;
 }
 .boxcaption{
 	float: left;
