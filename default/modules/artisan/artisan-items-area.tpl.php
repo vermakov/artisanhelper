@@ -32,7 +32,13 @@
 <?php print '<div class="profile_section_title">' . t('Their Artworks') . '</div>'; ?>
 <ul class="profile_artworks_list">
 <?php foreach($items as $item) { ?>
-  <?php print '<li class="profile_artwork_cell"><div class="profile_item_title">' . $item['title'] . '</div><img src="' . image_style_url('thumbnail', $item['image_url']) . '"><div class="proile_item_price">' . '$' . number_format($item['price'],2) . '</div></li>'; ?>
+  <?php 
+  print '<li class="artworks_list_cell">';
+
+//<div class="profile_item_title">' . $item['title'] . '</div><div class="profile_artwork_list_pic"><img src="' . image_style_url('large', $item['image_url']) . '"></div><div class="proile_item_price">' . '$' . number_format($item['price'],2) . '</div></li>'; 
+  print theme('artwork_teaser',array('link_url' => $item['link_url'],'title' => $item['title'],'image_uri' => $item['image_url'],'price'=>number_format($item['price'],2),'artisan_id' => $artisan_id, 'artisan_name' => $artisan_name));
+  print '</li>';
+?>
 <?php } ?>
 </ul>
 </div>

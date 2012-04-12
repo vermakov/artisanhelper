@@ -5,10 +5,47 @@
 }
 #menu-bar-wrapper {
   height: 50px;
+  background-image: url('shadowback.png');
 }
+.menu-wrapper {
+  margin-top:12px;
+}
+
+#menu-bar ul li a:hover,
+#menu-bar ul li a:active,
+#menu-bar ul li a:focus,
+.region-header li  a:hover,
+.region-header li  a:active, 
+.region-header li  a:focus {
+  background-image:url('menu_selection.png');
+  background-repeat: no-repeat;
+  background-position: 50% 130%;
+}
+#menu-bar ul > li.active-trail > a,
+#menu-bar ul > li.active-trail > a:hover,
+#menu-bar ul > li.active-trail > a:focus,
+#menu-bar > ul > li > a.active,
+#menu-bar > ul > li > a.active:hover,
+#menu-bar > ul > li > a.active:focus {
+  background-image: url(/sites/all/themes/corolla/color/menu_selection.png);
+  background-repeat: no-repeat;
+  background-position: 50% 130%;
+}
+#menu-bar ul li a:hover,
+#menu-bar ul li a:active,
+#menu-bar ul li a:focus,
+.region-header li  a:hover,
+.region-header li  a:active,
+.region-header li  a:focus {
+  background-image: url(/sites/all/themes/corolla/color/menu_selection.png);
+  background-repeat: no-repeat;
+  background-position: 50% 130%;
+}
+
+
 #branding {
-  float: left;
-  padding-top:15px;
+  margin-top:20px;
+  margin-bottom: 15px;
   display: table;
 }
 .region-header {
@@ -24,6 +61,7 @@
   vertical-align: middle;
 }
 #site-name {
+  display:none;
   font-size: 4.583em;
   line-height: 1;
   margin: 0;

@@ -1,42 +1,22 @@
- .profile_artworks_list {
+.simiar_artisans_list,.profile_artworks_list {
    list-style-type: none;
    width: 100%;
    padding: 0;
    margin: 0;
  }
  
-.profile_artwork_cell {
+.similar_artisans_cell,.profile_artwork_cell {
     background-color: #FFFFFF;
     border: 1px solid #ECECEC;
     float: left;
-    height: 130px;
+    height: 200px;
     margin: 0 8px 14px 0;
     padding: 6px;
     position: relative;
-    width: 130px;
+    width: 200px;
 }
 
-.similar_artisans_list_wrapper {
-  padding-left: 20px;
-}
-.similar_artisans_list {
-   list-style-type: none;
-   width: 100%;
-   padding: 10;
-   margin: 0;
- }
  
- .similar_artisans_cell{
-    background-color: #FFFFFF;
-    border: 1px solid #ECECEC;
-    float: left;
-    height: 170px;
-    margin: 5px 8px 14px 0;
-    padding: 6px;
-    position: relative;
-    width: 170px;
-}
-
 .profile_section_title {
   font-size: 15pt;
   font-weight: bold underline;
@@ -53,20 +33,22 @@
 .profile_artworks_wrapper {
   width: 100%;
 }
+.profile_item_title {
 
+}
 .artisan_profile_page {
 	width: 100%;
 	/* border: solid black 1px; */
 }
 
 .profile_left_column {
-	width: 50%;
+	width: 480px;
 	//background-color: blue;
 	float: left;
 }
 
 .profile_right_column {
-	width: 50%;
+	width: 680px;
 	/* background-color: green; */
 	float: left;
 }
@@ -82,10 +64,42 @@
 	/* border: solid orange 1px; */
 }
 
-.profile_video_area iframe{
-  padding-left: 4%;
+.profile_artwork_list_pic {
+  width: 100%;
+  height: 170px;
+  overflow: hidden; 
 }
 
+.profile_artwork_list_pic img {
+  width: 120%;
+  height: auto;
+  max-width: none;
+}
+
+.proile_item_price {
+  float: right;
+  font-weight: bold;
+}
+
+.similar_artisans_pic {
+  width: 100%;
+  height: 185px;
+  overflow:hidden;
+}
+
+.similar_artisans_list {
+  list-style-type: none;
+  margin: 0px;
+}
+
+.similar_artisans_pic img{
+  width: 140%;
+  height: auto;
+  max-width: none;
+}
+.profile_item_title {
+  padding-bottom: 2px;
+}
 .profile_video_area {
 	width: 100%;
 	padding-top: 20px;
@@ -96,14 +110,14 @@
 	width: 100%;
 	height: 200px;
 	border: solid orange 1px;
+  display:none;
 }
 
 
 .personal_info_area {
 	width: 100%;
 	/* border: solid orange 1px; */
-	padding: 20px;
-	padding-bottom: 50px;
+	padding: 24px 0px 20px 10px;
 }
 
 .profile_similar_artisans {

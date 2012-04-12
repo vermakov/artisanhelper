@@ -29,6 +29,6 @@
  */
 ?>
 <div>
-  <h4<?php print $title_attributes; ?>><a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!artisan_name', array('!artisan_name' => $name)); ?></a></h4>
+  <h3<?php print $title_attributes; ?>><a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!artisan_name', array('!artisan_name' => $name)); ?></a></h4>
   <div class="artisan_description"><?php print $description; ?></div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-define('MAX_TITLE_LENGTH_ARTISAN_ITEMS',45);
+define('MAX_TITLE_LENGTH_ARTISAN_ITEMS',22);
 
 /**
  * Present an artisan submission form.
@@ -135,8 +135,12 @@ function artisan_form_submit($form, &$form_state) {
 
   $artisan = &$form_state['artisan'];
   
+// Notify field widgets.
+  field_attach_submit('artisan', $artisan, $form, $form_state);
+  
   // Save the uploaded file from temp to permanent storage.
-  $file_info = file_load($form_state['field']['field_profile_picture']['und']['items'][0]['fid']);
+//  dprint_r($artisan['field_profile_picture']['und']);
+  $file_info = file_load($artisan->field_profile_picture['und'][0]['fid']);
   file_move($file_info,'public://',FILE_EXISTS_RENAME);
 
   $artisan->description = $form_state['values']['description'];
@@ -153,8 +157,6 @@ function artisan_form_submit($form, &$form_state) {
   
   $artisan->last_updated = REQUEST_TIME;
   
-  // Notify field widgets.
-  field_attach_submit('artisan', $artisan, $form, $form_state);
 
   // Save the artisan.
   artisan_save($artisan);
@@ -185,7 +187,8 @@ function artisan_extract_profile_info($elements) {
 
 function template_preprocess_artisan_items_area(&$variables) {
   $artisan = $variables['artisan'];
-  
+  $variables['artisan_id'] = $artisan->artisan_id;
+  $variables['artisan_name'] = $artisan->name; 
   $artisan_items = artworks_get_artisan_artworks($artisan->artisan_id);
   
   $items_to_display = array();
@@ -199,10 +202,19 @@ function template_preprocess_artisan_items_area(&$variables) {
 	
     $file_info = file_load($item->album_id);
     $image_url = $file_info->uri;
+    if(!empty($item->etsy_id) && $item->etsy_id != 0) {
+        $link_url = "http://www.etsy.com/listing/" . $item->etsy_id;
+      } else {
+        $link_url = "http://www.ebay.com/itm/". $item->ebay_id;
+      }
+
+
     $items_to_display[] = array(
 	  'title' => $title,
+          'full_title' => $item->title,
 	  'image_url' => $image_url,
 	  'price' => $item->max_price,
+          'link_url' => $link_url,
 	);
 	}
   }
@@ -233,6 +245,7 @@ function template_preprocess_profile_similar_artisans(&$variables) {
   }
   
   $variables['similar_artisans'] = $artisans_to_display;
+
 }
 
 function template_preprocess_profile_image_area(&$variables) {
@@ -260,7 +273,7 @@ function template_preprocess_profile_video_area(&$variables) {
     $video_link = $artisan->video_link;
     
     // Parse video URL to extract YouTube video code.
-    if($res = preg_match('/http:\/\/www.youtube.com\/watch\?v=(\w*)/i',  $video_link, $matches) == 1) {
+    if($res = preg_match('/http:\/\/www.youtube.com\/watch\?v=([^&]*)/i',  $video_link, $matches) == 1) {
 	  $youtube_id = $matches[1];
       $variables['youtube_id'] = $youtube_id;
     }

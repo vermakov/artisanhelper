@@ -141,7 +141,8 @@ ul.sf-menu li ul {
 }
 #menu-bar {
   padding: 0 0px;
-  font-size: 15pt;
+  font-size: 14pt;
+  font-weight: 700;
 }
 #menu-bar .block ,
 #menu-bar ul,
@@ -157,7 +158,7 @@ ul.sf-menu li ul {
 #menu-bar ul > li > a {
   color: #fff;
   display: block;
-  line-height: 1;
+  line-height: 20px;
   padding: 0.23em 20px 0.43em;
 }
 #menu-bar .sf-horizontal.sf-style-none li ul {

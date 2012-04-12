@@ -1,15 +1,63 @@
- .artworks_list {
+.artworks_list{
    list-style-type: none;
-   width: 900px;
+   width: 100%;
+   margin: 0px;
  }
- 
-.artworks_list_cell {
+ul.artworks_list{
+  margin: 0px;
+}
+.item-list ul{
+  margin: 0px;
+}
+.view-list-artworks{
+  margin: 0px;
+  padding: 0px;
+} 
+.similar_artisans_cell,.artworks_list_cell {
+  line-height: 100%;
     background-color: #FFFFFF;
     border: 1px solid #ECECEC;
     float: left;
     height: 200px;
-    margin: 0 8px 14px 0;
     padding: 6px;
     position: relative;
+    margin: 0 8px 14px 0;
     width: 200px;
+    box-shadow: 0px 1px 5px #999;
+}
+li.artworks_list_cell{
+    margin: 0 8px 14px 0;
+}
+
+.artwork-teaser-wrapper {
+  padding : 0px 4px 0px 4px;
+}
+
+.artwork_teaser_pic{
+  overflow: hidden;
+  height: 160px;
+  width: 100%;
+}
+
+.artwork_teaser_pic img {
+    width:150%;
+    max-width:none;
+    max-height:auto;
+}
+.artwork_teaser_name {
+  margin-top: 3px;
+  float: left;
+}
+.artwork_teaser_price_num {
+  font-size: 10pt;
+  font-weight: bold;
+  display: inline;
+}
+.artwork_teaser_price {
+  margin-top: 3px;
+  float: right;
+  font-size: 8pt;
+}
+.artwork_teaser_title {
+  padding-bottom: 2px;
 }

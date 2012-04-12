@@ -1,6 +1,7 @@
 <?php
 
-define('MAX_TITLE_LENGTH',45);
+define('MAX_TITLE_LENGTH',25);
+define('MAX_ARTISAN_NAME_LENGTH',12);
 
 /**
  * The class used for artwork entities
@@ -43,19 +44,30 @@ class ArtworkEntityController extends EntityAPIController {
 	  $image_file = file_load($entity->album_id);
 	  $artisan = artisan_get_by_id($entity->artisan_id);
 	
+	  $artisan_name = $artisan->name;
+	  if(strlen($artisan_name) > MAX_ARTISAN_NAME_LENGTH) {
+  	    $artisan_name = substr($artisan_name,0,MAX_ARTISAN_NAME_LENGTH) . '...';
+	  }
 	  $title = $entity->title;
 	  if(strlen($title) > MAX_TITLE_LENGTH) {
   	    $title = substr($title,0,MAX_TITLE_LENGTH) . '...';
 	  }
-	
+      if(!empty($entity->etsy_id) && $entity->etsy_id != 0) {
+        $link_url = "http://www.etsy.com/listing/" . $entity->etsy_id;
+      } else {
+        $link_url = "http://www.ebay.com/itm/". $entity->ebay_id;
+      }
       $content['artwork_teaser'] =  array(
         '#markup' => theme('artwork_teaser', array(
 											'title' => check_plain($title),
+        'full_title' => check_plain($entity->title),
+        'full_artisan_name' => check_plain($artisan->name),
 											'price' => check_plain($entity->max_price),
 											'item_id' => check_plain($entity->item_id),
 											'image_uri' => $image_file->uri,
+        'link_url' => $link_url,
 											'artisan_id' => check_plain($entity->artisan_id),
-											'artisan_name' => check_plain($artisan->name),
+											'artisan_name' => check_plain($artisan_name),
 											)));
 	} else if($view_mode == 'full') {
 	

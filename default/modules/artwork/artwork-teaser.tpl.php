@@ -29,10 +29,10 @@
  */
 ?>
 <div class="<?php print $classes; ?>">
-
-  <h4<?php print $title_attributes; ?>><?php print render($title); ?></h4>
-  
-  <img src="<?php print image_style_url('thumbnail', $image_uri) ?>">
-  <div class="artwork_price"><?php print '$' . number_format($price,2); ?></div>
-  <div class="name"><?php print t('by '); ?><a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!username', array('!username' => $artisan_name)); ?></a></div>
+  <div class="artwork-teaser-wrapper"><a href="<?php print $link_url; ?>">
+  <div class="artwork_teaser_title"><?php print render($title); ?></div>
+  <div class="artwork_teaser_pic"><img src="<?php print image_style_url('large', $image_uri) ?>"></div></a>
+  <div class="artwork_teaser_name">by <a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!username', array('!username' => $artisan_name)); ?></a></div>
+  <div class="artwork_teaser_price"><?php print '$<div class="artwork_teaser_price_num">' . number_format($price,2) . '</div>USD'; ?></div>
+  </div>
 </div>

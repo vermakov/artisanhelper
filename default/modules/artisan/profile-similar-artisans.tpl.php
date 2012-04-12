@@ -33,7 +33,7 @@
 <div class="similar_artisans_list_wrapper">
 <ul class="similar_artisans_list">
 <?php foreach($similar_artisans as $item) { ?>
-  <?php print '<li class="similar_artisans_cell"><div class="profile_item_title"><a href="artisan/' . $item['artisan_id'] . '">'. $item['name'] . '</div><img src="' . image_style_url('thumbnail', $item['image_url']) . '"></a></li>'; ?>
+  <?php print '<li class="similar_artisans_cell"><div class="profile_item_title"><a href="/artisan/' . $item['artisan_id'] . '">'. $item['name'] . '</div><div class="similar_artisans_pic"><img src="' . image_style_url('large', $item['image_url']) . '"></div></a></li>'; ?>
 <?php } ?>
 </ul>
 </div>

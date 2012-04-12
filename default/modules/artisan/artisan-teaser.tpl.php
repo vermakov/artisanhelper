@@ -29,9 +29,9 @@
  */
 ?>
 <div class="artisan-list-entry <?php print $classes; ?>">
-  <div class='artisan-list-photo'><a href="/artisan/<?php print $artisan_id; ?>"><img src="<?php print image_style_url('medium', $image_uri) ?>"></a></div>
+  <div class='artisan-list-photo-wrapper'><div class='artisan-list-photo'><a href="/artisan/<?php print $artisan_id; ?>"><img src="<?php print image_style_url('large', $image_uri) ?>"></a></div></div>
   <div class='artisan-list-details'>
-  <h4<?php print $title_attributes; ?>><a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!artisan_name', array('!artisan_name' => $name)); ?></a></h4>
+  <h3<?php print $title_attributes; ?>><a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!artisan_name', array('!artisan_name' => $name)); ?></a></h4>
   <div class="artisan_description"><?php print $short_description; ?></div>
   </div>
 </div>

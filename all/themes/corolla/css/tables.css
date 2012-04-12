@@ -1,4 +1,8 @@
 /* Tables */
+tbody {
+  border-top: 0px;
+}
+
 table {
   border-spacing: 0;
   border-color: #eee;
@@ -173,5 +177,5 @@ table img {
  * Webkit work-around. Uncomment and adjust if you have borders on td.
  */
 tr td:last-child {
-  border-right: 1px solid #eee;
+/*  border-right: 1px solid #eee;*/
 }

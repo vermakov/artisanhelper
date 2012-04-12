@@ -1,6 +1,6 @@
 .hs_container {
     border: 2px solid #FFFFFF;
-    box-shadow: 1px 1px 3px #222222;
+    box-shadow: 0px 1px 5px #999;
     clear: both;
     cursor: pointer;
     height: 471px;
@@ -24,35 +24,54 @@
     z-index: 200;
 }
 
-.hs_area1a img,.hs_area1b img {
-	height: 100%;
+.hs_area1a img{
+	width: 102%;
+	max-height: none;
+}
+
+.hs_area1b img {
+	height: 102%;
 	max-width: none;
 }
 
 .hs_area2a img,.hs_area2b img {
-	height: 100%;
+	height: 102%;
 	max-width: none;
 }
 .hs_area3a img,.hs_area3b img {
-	height: 100%;
+	height: 102%;
 	max-width: none;
 }
 .hs_area4a img,.hs_area4b img {
-	height: 100%;
+	height: 102%;
 	max-width: none;
 }
 .hs_area5a img,.hs_area5b img {
-	width: 100%;
+	width: 102%;
 	max-height: none;
 }
-.hs_area6a img,.hs_area6b img {
-	height: 100%;
+.hs_area6a img {
+	width: 102%;
+	max-height: none;
+}
+.hs_area6b img {
+	height: 102%;
 	max-width: none;
 }
 .hs_area7a img,.hs_area7b img {
-	height: 100%;
+	height: 102%;
 	max-width: none;
 }
+/*
+.slider_img_vertical {
+	height: 102%;
+	max-width: none;
+}
+.slider_img_horizontal {
+	width: 102%;
+	max-height: none;
+}
+*/
 .boxcaption{
 	float: left;
 	position: absolute;
@@ -66,35 +85,45 @@
 	-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
-.artisancover{
+.artisancover_text{
 	height: 30px;
 	font-size:12pt;
 	padding:4px;
 	padding-left:10px;
+  color: white;
+}
+
+.artisancover{
 	width: 100%;
 }
 
 .descriptioncover {
-	font-size:12pt;
-	padding:4px;
-	padding-left:10px;
 	width: 100%;
-	padding-left:10px;
+}
+.descriptioncover_text {
+  color: white;
+	font-size:12pt;
+	padding:4px 10px 4px 10px;
+	line-height: 115%;
+}
+.pricecover_text{
+  font-size:10pt;
+  color: white;
+  padding: 4px 10px 4px 10px;
 }
 
-.pricecover{
-	font-size:16pt;
-	padding:4px;
-	padding-left:10px;
-	
+.pricecover_digits{
+  font-size: 16pt;
+  color: #E25400;
+  display:inline;
+  opacity: 1;
 }
-
  
 .hs_area1a {
     height: 334px;
     left: 0;
     top: 0;
-    width: 224px;
+    width: 225px;
 }
 .hs_area1b {
     height: 334px;
@@ -142,7 +171,7 @@
     height: 135px;
     left: 337px;
     top: 335px;
-    width: 338px;
+    width: 339px;
 }
 .hs_area5b {
     height: 135px;
@@ -154,7 +183,7 @@
     height: 334px;
     left: 903px;
     top: 0;
-    width: 224px;
+    width: 223px;
 }
 .hs_area6b {
     height: 334px;
@@ -166,11 +195,11 @@
     height: 135px;
     left: 1014px;
     top: 335px;
-    width: 167px;
+    width: 168px;
 }
 .hs_area7b {
     height: 135px;
     left: 1183px;
     top: 335px;
-    width: 167px;
+    width: 168px;
 }

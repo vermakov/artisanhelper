@@ -102,7 +102,7 @@ function artwork_form($form, &$form_state, $artwork) {
       '#required' => TRUE,
       '#default_value' => $artwork->short_description,  
     ),
-  	'tags' => array(
+    'tags' => array(
       '#type' => 'textfield',
       '#title' => t('Tags'),
       '#size' => 255,
@@ -114,10 +114,18 @@ function artwork_form($form, &$form_state, $artwork) {
       '#type' => 'hidden',
     ),
     'etsy_id' => array(
-      '#type' => 'hidden',
+      '#type' => 'textfield',
+      '#title' => t('Etsy ID'),
+      '#size' => 255,
+      '#required' => FALSE,
+      '#default_value' => $artwork->etsy_id,
     ),
     'ebay_id' => array(
-      '#type' => 'hidden',
+      '#type' => 'textfield',
+      '#title' => t('Ebay ID'),
+      '#size' => 255,
+      '#required' => FALSE,
+      '#default_value' => $artwork->ebay_id,
     ),
     'stock_count' => array(
       '#type' => 'hidden',
@@ -143,7 +151,7 @@ function artwork_form($form, &$form_state, $artwork) {
     '#options' => artisan_get_full_list(),
     '#weight' => -4,
     '#required' => TRUE,
-    '#default_value' => $artwork->short_description,  
+    '#default_value' => $artwork->artisan_id,  
   );
   
   // Add the buttons.

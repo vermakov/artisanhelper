@@ -30,11 +30,8 @@
 ?>
 <div class="<?php print $classes; ?>">
 
-  <div class="date"><?php print $date; ?>:</div>
-
-  <h4<?php print $title_attributes; ?>><?php print render($title); ?></h4>
-  
-  <img src="<?php print image_style_url('thumbnail', $image_uri) ?>">
+  <div class="artisan_list_name">$title</div>
+  <div class="artisan_list_image"><img src="<?php print image_style_url('large', $image_uri) ?>"></div>
   <?php
    /*
   <div class="name"><?php print t('by !username', array('!username' => $name)); ?></div>

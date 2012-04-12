@@ -20,7 +20,7 @@ class ArtisanEntityController extends EntityAPIController {
   
     if($view_mode == 'teaser') {
       $content = array( //parent::buildContent($entity, $view_mode, $langcode, $content);
-	    '#entity_type' => 'artisan',
+        '#entity_type' => 'artisan',
         '#bundle' => 'artisan',
       );
     
@@ -32,14 +32,17 @@ class ArtisanEntityController extends EntityAPIController {
 	  if(strlen($name) > MAX_ARTISAN_NAME_LENGTH) {
   	    $name = substr($name,0,MAX_ARTISAN_NAME_LENGTH) . '...';
 	  }
-	  
+      $short_description = $entity->description;
+      if(strlen($short_description) > 1000 ) {
+        $short_description = substr($short_description,0,1000) . '...';
+      }
       $content['artisan_teaser'] =  array(
         '#markup' => theme(
 	      'artisan_teaser', array(
   	        'name' => $name,
 		    'image_uri' => $image_file->uri,
 		    'artisan_id' => check_plain($entity->artisan_id),
-		    'short_description' => check_plain($entity->description),
+		    'short_description' => check_plain($short_description),
 	      )
 	    )
 	  );
