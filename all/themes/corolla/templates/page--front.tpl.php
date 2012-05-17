@@ -53,6 +53,11 @@
     </div></div>
   <?php endif; ?>
 
+  <?php if ($page['tertiary_content']): ?>
+    <div id="tertiary-content-wrapper"><div class="container clearfix">
+      <?php print render($page['tertiary_content']); ?>
+    </div></div>
+  <?php endif; ?>
 
   <?php if ($page['footer']): ?>
     <div id="footer-wrapper"><div class="container clearfix">

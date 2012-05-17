@@ -243,7 +243,7 @@ function artwork_add_etsy_item($form, $form_state) {
 
 function artwork_add_ebay_item($form, $form_state) {
   
-  if($match_res = preg_match('/http:\/\/www.ebay.com\/itm\/.*\/(.\d+)\?.*/i',  $_POST['ebay_link'], $matches) == 1) {
+  if($match_res = preg_match('/http:\/\/www.ebay.com\/itm\/.*\/(.\d+)\?.*/i',  $_POST['ebay_link'], $matches) == 1 || $match_res = preg_match('/http:\/\/cgi.ebay.com\/.*item\=(\d+)/i', $_POST['ebay_link'],$matches) == 1) {
 	// Define global variables
 	$s_endpoint = "http://open.api.ebay.com/shopping?";  // Shopping URL to call
 	$cellColor = "bgcolor=\"#dfefff\"";  // Light blue background used for selected items 

@@ -30,7 +30,7 @@ function artisan_block_info(){
 function artisan_list_artisans($number) {
   // Use the Database API to retrieve our data.
   $query = db_select('artisan_profiles', 'artisans')
-    ->fields('artisans', array('artisan_id', 'name', 'description','video_link','created','changed', 'album_id'))
+    ->fields('artisans', array('artisan_id', 'name', 'country', 'description','video_link','created','changed', 'album_id'))
     ->orderBy('created', 'DESC')
     ->range(0, $number)
     ->execute();
@@ -87,7 +87,7 @@ function artisan_get_full_list() {
  */
 function artisan_theme($existing, $type, $theme, $path) { 
   return array(
-  	'artisan_list_profile' => array(
+ /* 	'artisan_list_profile' => array(
   	  'variables' => array(
   	    'node' => NULL,
         'file_info' => NULL,
@@ -97,6 +97,7 @@ function artisan_theme($existing, $type, $theme, $path) {
     'item_list__artisan' => array(
       'render element' => 'items',
     ), 
+*/
 	'artisan_teaser' => array(
       'variables' => array('name', 'artisan_id', 'image_uri','short_description'),
       'template' => 'artisan-teaser',
@@ -544,3 +545,92 @@ function artisan_delete($aid) {
 function artisan_delete_multiple($aids) {
   return entity_get_controller('artisan')->delete($aids);
 }
+
+/** 
+ * Define image style for faster loading of artisan profile pictures.
+ */
+function artisan_image_effect_info()
+{
+  $effects = array();
+  
+  $effects['scale_center_crop'] = array(
+    'label' => t('Scale Center horizontally and Crop'),
+    'help' => t('Scales image, centers it horizontally and crops to dimensions specified.'),
+    'effect callback' => 'scale_center_crop_effect',
+    'form callback' => 'scale_center_crop_form',
+  );
+  $effects['scale_center2_crop'] = array(
+    'label' => t('Scale Center and Crop'),
+    'help' => t('Scales image, centers it horizontally and vertically, and crops to dimensions specified.'),
+    'effect callback' => 'scale_center_crop_effect2',
+    'form callback' => 'scale_center_crop_form',
+  );
+  return $effects;
+}
+
+function scale_center_crop_form()
+{
+
+  $form['width'] = array(
+    '#type' => 'textfield',
+    '#default_value' => '200',
+    '#title' => t('New Width'),
+    '#description' => t('Width of the new image'),
+    '#size' => 7,
+  );
+
+  $form['height'] = array(
+    '#type' => 'textfield',
+    '#default_value' => '200',
+    '#title' => t('New Height'),
+    '#description' => t('Height of the new image'),
+    '#size' => 7,
+  );
+  return $form;
+}
+
+function scale_center_crop_effect(&$image, $data) {
+  if(($image->info['height'] / $image->info['width']) > $data['height']/$data['width']) {
+//  if($image->info['height'] > (1.7/2.0)*$image->info['width']) {
+    print 'tall';
+    image_scale($image,$data['width'],NULL,TRUE);
+  } else {
+    print 'wide';
+    image_scale($image,NULL,$data['height'],TRUE);
+  }
+  
+  if($image->info['width'] >= $data['width']) {
+    print 'wider';
+    $crop_x = ($image->info['width'] - $data['width'])/2;
+    image_crop($image,$crop_x,0,$data['width'],$data['height']);
+  } else {
+    print 'narrower '.$image->info['width'] . ' ' . $data['width'] ;
+    image_crop($image,0,0,$data['width'],$data['height']);
+  }
+}
+
+function scale_center_crop_effect2(&$image, $data) {
+  if(($image->info['height'] / $image->info['width']) > $data['height']/$data['width']) {
+//  if($image->info['height'] > (1.7/2.0)*$image->info['width']) {
+    print 'tall';
+    image_scale($image,$data['width'],NULL,TRUE);
+  } else {
+    print 'wide';
+    image_scale($image,NULL,$data['height'],TRUE);
+  }
+  
+  if($image->info['height'] >= $data['height']) {
+    $crop_y = ($image->info['height'] - $data['height'])/2;
+  } else {
+    $crop_y = 0;
+  }
+  if($image->info['width'] >= $data['width']) {
+    print 'wider';
+    $crop_x = ($image->info['width'] - $data['width'])/2;
+  } else {
+    print 'narrower '.$image->info['width'] . ' ' . $data['width'] ;
+    $crop_x = 0;
+  }
+  image_crop($image,$crop_x,$crop_y,$data['width'],$data['height']);
+}
+

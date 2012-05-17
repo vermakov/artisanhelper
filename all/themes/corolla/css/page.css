@@ -1,4 +1,8 @@
 /* General page and module styles */
+
+.copyright {
+  text-align: center;
+}
 #page > header {
   clear: both;
   padding: 10px 0 0;
@@ -42,11 +46,14 @@
   background-position: 50% 130%;
 }
 
+#header-wrapper {
+  height:25px;
+}
 
 #branding {
   margin-top:20px;
   margin-bottom: 15px;
-  display: table;
+  display: none;
 }
 .region-header {
   float: right;

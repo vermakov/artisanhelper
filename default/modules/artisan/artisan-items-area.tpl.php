@@ -29,7 +29,7 @@
  */
 ?>
 <div class="profile_artworks_wrapper">
-<?php print '<div class="profile_section_title">' . t('Their Artworks') . '</div>'; ?>
+<?php print '<div class="profile_section_title">' . t('Their Handmade Goods') . '</div>'; ?>
 <ul class="profile_artworks_list">
 <?php foreach($items as $item) { ?>
   <?php 

@@ -194,7 +194,7 @@ function template_preprocess_artisan_items_area(&$variables) {
   $items_to_display = array();
   
   foreach($artisan_items as $item) {
-    for($i = 0; $i < 10; $i++) {
+    //for($i = 0; $i < 10; $i++) {
     $title = $item->title;
     if(strlen($title) > MAX_TITLE_LENGTH_ARTISAN_ITEMS) {
       $title = substr($title,0,MAX_TITLE_LENGTH_ARTISAN_ITEMS) . '...';
@@ -216,7 +216,7 @@ function template_preprocess_artisan_items_area(&$variables) {
 	  'price' => $item->max_price,
           'link_url' => $link_url,
 	);
-	}
+    //}
   }
   
   $variables['items'] = $items_to_display;  
@@ -251,14 +251,14 @@ function template_preprocess_profile_similar_artisans(&$variables) {
 function template_preprocess_profile_image_area(&$variables) {
   $artisan = $variables['artisan'];
   
-  $variables['images'] = null;
+  $variables['images'] = array();
   
   if(isset($artisan->album_id)){
 	  // Find the image URI.
 	  $image_file = file_load($artisan->album_id);
 	  
 	  if(isset($image_file->uri)){
-		$variables['images'] = array($image_file->uri,$image_file->uri,$image_file->uri,$image_file->uri,$image_file->uri,$image_file->uri,$image_file->uri,$image_file->uri);
+		$variables['images'][] = $image_file->uri;
 	  }
   }
 }
@@ -273,7 +273,7 @@ function template_preprocess_profile_video_area(&$variables) {
     $video_link = $artisan->video_link;
     
     // Parse video URL to extract YouTube video code.
-    if($res = preg_match('/http:\/\/www.youtube.com\/watch\?v=([^&]*)/i',  $video_link, $matches) == 1) {
+    if($res = preg_match('/http:\/\/www.youtube.com\/watch\?v=([^&]*)/i',  $video_link, $matches) == 1 || $res = preg_match('/http:\/\/youtu.be\/([^&]*)/i', $video_link, $matches) == 1) {
 	  $youtube_id = $matches[1];
       $variables['youtube_id'] = $youtube_id;
     }

@@ -14,9 +14,17 @@ function artwork_block_info(){
     // The name of the block on the blocks administration page.
     'info' => t('List of artworks'),
   );
-  
+  $blocks['front_page_slider2'] = array(
+    'info' => t('Slider of artisans/artworks.'),
+  ); 
   $blocks['front_page_slider'] = array(
 	'info' => t('Slider of artisans/artworks.'),
+  );
+  $blocks['become_artisan_helper_front'] = array(
+    'info' => t('Become artisan helper (front)'),
+  );
+  $blocks['front_page_slogan'] = array(
+    'info' => t('Slogan (front)'),
   );
   
   return $blocks; 
@@ -65,11 +73,26 @@ function artwork_theme($existing, $type, $theme, $path) {
     ),
     'item_list__artwork' => array(
       'render element' => 'items',
-    ), 
+    ),
+    'front_page_slogan' => array(
+      'template' => 'front-page-slogan',
+    ),
+   't_become_artisan_helper_front' => array(
+      'variables' => array(),
+      'template' => 'become-artisan-helper-front',
+    ),
+   /* 'artwork_front_page_slider2' => array(
+      'variables' => array('items','myvar'),
+      'template' => 'front-page-slider',
+    ),*/ 
     'artwork_front_page_slider' => array(
       'render element' => 'items',
-    ), 
-	'artwork_teaser' => array(
+    ),
+    'slider_artisan_item_cell' => array(
+      'variables' => array('item'),
+      'template' => 'slider-artisan-item-cell',
+    ),
+    'artwork_teaser' => array(
       'variables' => array('title', 'price', 'image_uri','artisan_id','artisan_name'),
       'template' => 'artwork-teaser',
     ),
@@ -109,8 +132,48 @@ function artwork_block_view($delta = '') {
     'subject' => '',
     'content' => '',
   );
-  
-  if($delta == 'front_page_slider') {
+  if($delta == 'front_page_slogan') {
+    if(user_access('access_content')) {
+      $block['content']['slogan'] = array(
+        '#theme' => 'front_page_slogan',
+      );
+    }
+  } else if($delta == 'become_artisan_helper_front') {
+    //if(user_access('access_content')) {
+        $block['content']['info_box'] = array(
+            '#theme' => 't_become_artisan_helper_front',
+        );
+//    }
+  } else if($delta == 'front_page_slider2') {
+		$items = array();
+		$artisanList = array();
+		
+		// Retrieve the recently added artworks
+		$artworks = artwork_list_artworks(100);
+		
+		$artisans = artisan_list_artisans(100);
+		
+		foreach($artisans as $single_artisan) {
+		  $artisanList[$single_artisan->artisan_id]['artisan'] = $single_artisan;
+		  $artisanList[$single_artisan->artisan_id]['artworks'] = array();
+		}
+		
+		foreach($artworks as $item) {
+		  array_push($artisanList[$item->artisan_id]['artworks'], $item);
+		}
+
+		// Theme the list of artworks and artisans
+		$block['content']['slider'] = array(
+                  '#markup' => theme('artwork_front_page_slider2',array('items' => $artisanList)),
+                );
+		$block['content']['#attached']['css'][] = drupal_get_path('module','artwork') . '/slider2.css';
+/*
+		  '#theme' => 'artwork_front_page_slider2',
+		  '#items' => 'List Items',//$artisanList,
+                  '#myvar' => 'TESTING',
+		);
+*/
+  } else if($delta == 'front_page_slider') {
     if(user_access('access content')){
 		$items = array();
 		$artisanList = array();
@@ -128,19 +191,7 @@ function artwork_block_view($delta = '') {
 		foreach($artworks as $item) {
 		  array_push($artisanList[$item->artisan_id]['artworks'], $item);
 		}
-		/*foreach($artisanList as $single_artisan)
-        {
-		  // Load image file link
-          $items[] = array(
-            'data' => array( 
-              '#theme' => 'artwork_list_profile',
-              '#node' => $single_artisan,
-              '#artisan_file_info' => file_load($single_artisan->album_id),
-			  '#artwork_file_info' => file_load($single_artisan['artworks'][0]->album_id),
-            ),
-            'class' => array('artwork-'.$single_artisan->artisan_id),
-          );
-        }*/
+
 		// Theme the list of artworks and artisans
 		$block['content']['list'] = array(
 		  '#theme' => 'artwork_front_page_slider',
@@ -233,6 +284,12 @@ function theme_artwork_front_page_slider(&$variables)
       $artisan['artworks'][0]->isVertical = 0;
     }
   }
+  $verticalKeys = array_rand($vertical,2);
+  $horizontalKeys = array_rand($horizontal,5);
+  shuffle($verticalKeys);
+  shuffle($horizontalKeys);
+
+  $nameLimits = array(50,50,50,18,50,50,18);
   
   // Create a list of vertial artisans.
   for($indx = 1;$indx <= 7;$indx+=1) {
@@ -243,11 +300,20 @@ function theme_artwork_front_page_slider(&$variables)
     }
     // $item = $variables['items']['#items'][$artisanIds[$i-1]];
     if($indx == 1 || $indx == 6) {
-      //$item = array_pop($vertical);//
-      $item = $vertical[rand(1,count($vertical))-1];
+      $item = $vertical[array_pop($verticalKeys)];
+      //$item = $vertical[rand(1,count($vertical))-1];
+      $item['image_style_artwork'] = $item['image_style'] = 'slider_large_vertical';
     } else {
-      //$item = array_pop($horizontal);//
-      $item = $horizontal[rand(1,count($horizontal))-1];
+      $item = $horizontal[array_pop($horizontalKeys)];//
+      //$item = $horizontal[rand(1,count($horizontal))-1];
+      if($indx == 2 || $indx == 3) {
+        $item['image_style_artwork'] = $item['image_style'] = 'slider_wide_middle';
+      } else if($indx == 4 || $indx == 7) {
+        $item['image_style_artwork'] = $item['image_style'] = 'slider_small_bottom';
+      } else if($indx == 5){
+        $item['image_style'] = 'slider_bottom_widest_artwork';//'slider_bottom_widest';
+        $item['image_style_artwork'] = 'slider_bottom_widest_artwork';
+      }
     }
 
     // Fail gracefully if no artworks are present 
@@ -264,17 +330,27 @@ function theme_artwork_front_page_slider(&$variables)
       $img_class = 'slider_img_horizontal';
     }
 	
-    $output .= '      <div class="hs_area hs_artisan hs_area' . $indx . 'a">';
-    $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><img  class="hs_visible" alt="" src="' . image_style_url('large', $artisan_file_info->uri) . '" ><div class="artisancover boxcaption"><div class="artisancover_text">' . $item['artisan']->name . '</div></div></a>';
+    $output .= '     <div class="artisan_item_box artisan_item_box_' . $indx . '"><div class="clearfix hs_area hs_artisan hs_area' . $indx . 'a">';
+    $output .= '			<a href="/artisan/' . $item['artisan']->artisan_id . '"><div class="artisan_img_frame"><img class="hs_visible" alt="" src="' . image_style_url($item['image_style'], $artisan_file_info->uri) . '" ><div class="artisancover boxcaption"><div class="artisancover_text"><img style="width:20px;height:12px;border:0px" src="/sites/default/files/flags/'.$item['artisan']->country.'.png">&nbsp;<div class="slider_country_name">'.get_country_name($item['artisan']->country).'</div><br>' . $item['artisan']->name . '</div></div></div></a>';
 	$output .= '	  </div>';
-    $output .= '      <div class="hs_area hs_artwork hs_area' . $indx . 'b">';
+    $output .= '      <div class="hs_area hs_artwork clearfix hs_area' . $indx . 'b">';
     if(empty($item['artworks'][0]->etsy_id) || $item['artworks'][0]->etsy_id == 0) {
     $link = "http://www.ebay.com/itm/" . $item['artworks'][0]->ebay_id;
 	} else {
     $link = "http://www.etsy.com/listing/" . $item['artworks'][0]->etsy_id;
 	}
-	  $output .= '		<a href="' . $link . '"><img  class="' . $img_class . ' hs_visible" alt="" src="' . image_style_url('large', $artwork_file_info->uri) . '" ><div class="pricecover boxcaption"><div class="pricecover_text">$<div class="pricecover_digits">' .number_format( $item['artworks'][0]->max_price,2) . '</div>USD</div></div><div class="descriptioncover boxcaption"><div class="descriptioncover_text">' . $item['artworks'][0]->title . '</div></div></a>';
-    $output .= '      </div>';
+	$artisan_name = $item['artisan']->name;
+	if(strlen($artisan_name) > 17){
+		$artisan_name = substr($artisan_name,0,17) . '...';
+	}
+        $title = $item['artworks'][0]->title;
+        if(strlen($title) > $nameLimits[$indx-1]) {
+          $title = substr($title,0,$nameLimits[$indx-1]) . '...';
+        }
+
+	  $output .= '		<a href="' . $link . '" ><div class="artwork_img_frame"><img  class="' . $img_class . ' hs_visible" alt="" src="' . image_style_url($item['image_style_artwork'], $artwork_file_info->uri) . '" ><div class="pricecover boxcaption"><div class="pricecover_text">$<div class="pricecover_digits">' .number_format( $item['artworks'][0]->max_price,2) . '</div>USD</div></div><div class="descriptioncover boxcaption"><div class="descriptioncover_text">' . $title . ' by <div class="descriptioncover_name">'. $artisan_name . '</div></div></div></div></a>';
+
+    $output .= '      </div></div>';
   }
   
   $output .= '	</div>';
@@ -282,6 +358,17 @@ function theme_artwork_front_page_slider(&$variables)
   
 
   return $output;
+}
+
+function get_country_name($countrySymbol)
+{
+  switch($countrySymbol) {
+    case 'MX': $ret = 'Mexico';
+              break;
+    case 'UZ': $ret = 'Uzbekistan';
+             break;
+  }
+  return $ret;
 }
 
 function theme_item_list__artwork(&$variables)

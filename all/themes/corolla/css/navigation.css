@@ -19,7 +19,21 @@ ul.menu ul {
 .block .menu li.content {
   padding: 0; /* extra class can equal a standard class */
 }
+#menu-bar .menu-wrapper > ul > li.first{
+  position:relative;
+  font-size:25pt;
+  font-weight: 500;
+  background-image: none;
+  text-shadow: 1px 1px 5px #330000;
+}
+#menu-bar .menu-wrapper > ul > li.first > a:hover {
+  background-image:none;
+}
 
+#menu-bar .menu-wrapper > ul > li{
+  position:relative;
+  top: -9px;
+}
 /* Pager */
 .item-list ul.pager {
   margin: 15px 0 2px 0;
@@ -141,8 +155,9 @@ ul.sf-menu li ul {
 }
 #menu-bar {
   padding: 0 0px;
-  font-size: 14pt;
-  font-weight: 700;
+  text-shadow: 0px -1px 1px #551111;
+  font-size: 18pt;
+  font-weight: 500;
 }
 #menu-bar .block ,
 #menu-bar ul,
@@ -158,8 +173,8 @@ ul.sf-menu li ul {
 #menu-bar ul > li > a {
   color: #fff;
   display: block;
-  line-height: 20px;
-  padding: 0.23em 20px 0.43em;
+  line-height: 15px;
+  padding: 0.23em 20px 0.45em;
 }
 #menu-bar .sf-horizontal.sf-style-none li ul {
   opacity: .95;

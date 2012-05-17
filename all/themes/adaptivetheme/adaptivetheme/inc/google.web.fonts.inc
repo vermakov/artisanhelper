@@ -402,7 +402,7 @@ function get_font_families($fonts, $theme_name) {
   if (!empty($google_font_families)) {
     $array = array_unique($google_font_families);
     $google_fonts = trim(implode('|', $array));
-    drupal_add_css('//fonts.googleapis.com/css?family=' . $google_fonts, array(
+    drupal_add_css('//fonts.googleapis.com/css?family=' . $google_fonts . ':400,700', array(
       'group' => CSS_THEME,
       'type' => 'external',
       'weight' => -1,

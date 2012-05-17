@@ -1,66 +1,33 @@
 .hs_container {
-    border: 2px solid #FFFFFF;
-    box-shadow: 0px 1px 5px #999;
+    /* border: 2px solid #FFFFFF;
+    box-shadow: 0px 1px 5px #999; */
     clear: both;
     cursor: pointer;
-    height: 471px;
+    height: 540px;
     overflow: hidden;
     position: relative;
-    width: 1352px;
+    width: 1400px;
 }
 .hs_container .hs_area {
     overflow: hidden;
-    position: absolute;
-}
-.hs_area img {
-    float: left;
-    display: none;
-    left: 0;
-    position: absolute;
-    top: 0;
+    float:left;
+    display:inline;
 }
 .hs_area img.hs_visible {
     display: block;
     z-index: 200;
 }
 
-.hs_area1a img{
-	width: 102%;
-	max-height: none;
+.hs_area2a img,.hs_area2b img,.hs_area3a img,.hs_area3b img {
+  height: 155px;
+  width: 223px;
 }
-
-.hs_area1b img {
-	height: 102%;
-	max-width: none;
+.artisan_img_frame {
+  border-right: 1px solid white;
+  overflow:hidden;
 }
-
-.hs_area2a img,.hs_area2b img {
-	height: 102%;
-	max-width: none;
-}
-.hs_area3a img,.hs_area3b img {
-	height: 102%;
-	max-width: none;
-}
-.hs_area4a img,.hs_area4b img {
-	height: 102%;
-	max-width: none;
-}
-.hs_area5a img,.hs_area5b img {
-	width: 102%;
-	max-height: none;
-}
-.hs_area6a img {
-	width: 102%;
-	max-height: none;
-}
-.hs_area6b img {
-	height: 102%;
-	max-width: none;
-}
-.hs_area7a img,.hs_area7b img {
-	height: 102%;
-	max-width: none;
+.artwork_img_frame {
+  overflow:hidden;
 }
 /*
 .slider_img_vertical {
@@ -74,31 +41,36 @@
 */
 .boxcaption{
 	float: left;
+  	text-shadow: 0px 1px 2px black;
 	position: absolute;
-	background: #000;
+	background: rgba(0,0,0,0.6);
 	z-index: 205;
 	display: none;
-	opacity: .8;
 	/* For IE 5-7 */
 	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
 	/* For IE 8 */
 	-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
-
+.slider_country_name {
+  font-size: 10pt;
+  display: inline;
+}
 .artisancover_text{
-	height: 30px;
 	font-size:12pt;
 	padding:4px;
 	padding-left:10px;
-  color: white;
+	color: white;
 }
-
 .artisancover{
-	width: 100%;
+  width: 100%;
+  line-height: 1.2;
+  position:relative;
+  top:-46px;
+  display: inline;
 }
 
 .descriptioncover {
-	width: 100%;
+  width: 100%;
 }
 .descriptioncover_text {
   color: white;
@@ -106,6 +78,11 @@
 	padding:4px 10px 4px 10px;
 	line-height: 115%;
 }
+.descriptioncover_name {
+  display: inline;
+  color:#E25400;
+}
+
 .pricecover_text{
   font-size:10pt;
   color: white;
@@ -118,88 +95,57 @@
   display:inline;
   opacity: 1;
 }
- 
-.hs_area1a {
-    height: 334px;
+.hs_area5a .artisan_img_frame img {
+  position: relative;
+}
+
+.artisan_item_box {
+  position: absolute;
+  overflow: hidden;
+  padding: 0px;
+  background-color: white;
+  border: solid 1px #ECECEC;
+  box-shadow: 0px 1px 5px #999999;
+} 
+.artisan_item_box_1 {
+    height: 332px;
     left: 0;
     top: 0;
-    width: 225px;
+    width: 448px;
 }
-.hs_area1b {
-    height: 334px;
-    left: 226px;
+.artisan_item_box_2 {
+    height: 154px;
+    left: 472px;
     top: 0;
-    width: 224px;
+    width: 448px;
 }
-.hs_area2a {
-    height: 166px;
-    left: 451px;
-    top: 0;
-    width: 225px;
+.artisan_item_box_3 {
+    height: 154px;
+    left: 472px;
+    top: 178px;
+    width: 448px;
 }
-.hs_area2b {
-    height: 166px;
-    left: 677px;
-    top: 0;
-    width: 225px;
-}
-.hs_area3a {
-    height: 167px;
-    left: 451px;
-    top: 167px;
-    width: 225px;
-}
-.hs_area3b {
-    height: 167px;
-    left: 677px;
-    top: 167px;
-    width: 225px;
-}
-.hs_area4a {
+.artisan_item_box_4 {
     height: 135px;
     left: 0;
-    top: 335px;
-    width: 167px;
-}
-.hs_area4b {
-    height: 135px;
-    left: 168px;
-    top: 335px;
-    width: 168px;
-}
-.hs_area5a {
-    height: 135px;
-    left: 337px;
-    top: 335px;
-    width: 339px;
-}
-.hs_area5b {
-    height: 135px;
-    left: 677px;
-    top: 335px;
+    top: 356px;
     width: 336px;
 }
-.hs_area6a {
-    height: 334px;
-    left: 903px;
-    top: 0;
-    width: 223px;
-}
-.hs_area6b {
-    height: 334px;
-    left: 1127px;
-    top: 0;
-    width: 224px;
-}
-.hs_area7a {
+.artisan_item_box_5 {
     height: 135px;
-    left: 1014px;
-    top: 335px;
-    width: 168px;
+    left: 361px;
+    top: 356px;
+    width: 672px;
 }
-.hs_area7b {
+.artisan_item_box_6 {
+    height: 332px;
+    left: 946px;
+    top: 0;
+    width: 448px;
+}
+.artisan_item_box_7 {
     height: 135px;
-    left: 1183px;
-    top: 335px;
-    width: 168px;
+    left: 1057px;
+    top: 356px;
+    width: 338px;
 }

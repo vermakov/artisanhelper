@@ -3,11 +3,9 @@
    width: 100%;
    margin: 0px;
  }
-ul.artworks_list{
-  margin: 0px;
-}
-.item-list ul{
-  margin: 0px;
+.block .item-list .artworks_list {
+  margin: 0;
+  
 }
 .view-list-artworks{
   margin: 0px;
@@ -25,8 +23,8 @@ ul.artworks_list{
     width: 200px;
     box-shadow: 0px 1px 5px #999;
 }
-li.artworks_list_cell{
-    margin: 0 8px 14px 0;
+.item-list ul .artworks_list_cell{
+    margin: 0 14px 14px 0;
 }
 
 .artwork-teaser-wrapper {
@@ -39,11 +37,6 @@ li.artworks_list_cell{
   width: 100%;
 }
 
-.artwork_teaser_pic img {
-    width:150%;
-    max-width:none;
-    max-height:auto;
-}
 .artwork_teaser_name {
   margin-top: 3px;
   float: left;
