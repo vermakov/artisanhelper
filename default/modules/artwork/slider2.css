@@ -1,0 +1,55 @@
+.slider2_list {
+  display: inline;
+  list-style-type: none;
+}
+.artisan_item_cell_artisan{
+  width: 200px;
+  height: 201px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+  border-right:solid white 1px;
+}
+
+.artisan_item_cell_artisan img{
+  width: 160%;
+  height: auto;
+  max-width: none;
+}
+.slider2_artisan_name {
+  display: none;
+}
+
+.artisan_item_cell {
+  width: 322px;
+  height: 201px;
+  border: solid 1px white;
+  margin: 0px 22px 22px 0px;
+}
+.slider2_wrapper {
+  width:1460px;
+}
+.slider2_list_cell {
+  float:left;
+}
+
+.artisan_item_cell_item1{
+  width: 120px;
+  height: 100px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+  border-bottom: solid white 1px;
+}
+.artisan_item_cell_item1 img, .artisan_item_cell_item2 img{
+  width: 150%;
+  height: auto;
+  max-width: none;
+}
+.artisan_item_cell_item2{
+  width: 120px;
+  height: 100px;
+  overflow: hidden;
+  display: inline;
+  float: left;
+}

@@ -1,0 +1,14 @@
+name = Copyright block
+description = Adds a copyright block to be placed on the site
+package = Blocks
+core = 7.x
+dependencies[] = block
+configure = admin/structure/block/manage/copyright_block/copyright/configure
+
+
+; Information added by drupal.org packaging script on 2012-01-21
+version = "7.x-1.1"
+core = "7.x"
+project = "copyright_block"
+datestamp = "1327141238"
+

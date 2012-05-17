@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * @file
+ * Module file for "Copyright block".
+ */
+
+/**
+ * Implements hook_block_info().
+ *
+ * Provides one block named 'Copyright' that is globally cached.
+ */
+function copyright_block_block_info() {
+  $blocks['copyright'] = array(
+    'info' => t('Copyright'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ *
+ * Renders a HTML-span containing the copyright information.
+ */
+function copyright_block_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'copyright':
+
+      // Check if an inception year is given.
+      $year = variable_get('copyright_block_inceptionyear');
+      $currentYear = date('Y', REQUEST_TIME);
+      if ($year) {
+        // Show something like 2003 - 2011, if not current year.
+        if ($year != $currentYear) {
+          // Load the template for displaying spacer between the copyright year.
+          $spacer = variable_get('copyright_block_spacertemplate');
+          if (!$spacer) {
+            // No template set, set default fallback.
+            $spacer = ' - ';
+          } else {
+            // Assure that we don't put out unescaped HTML.
+            $spacer = check_plain($spacer);
+          }
+          $year .= $spacer . $currentYear;
+        }
+      }
+      else {
+        // Show only the current year.
+        $year = $currentYear;
+      }
+
+      // Check if there is a name for the copyright holder.
+      $holder = variable_get('copyright_block_copyrightholder');
+      if (!$holder) {
+        // No holder given, default to site name.
+        $holder = variable_get('site_name', '');
+      }
+
+      // Load the template for displaying the copyright.
+      $template = variable_get('copyright_block_template');
+      if (!$template) {
+        // No template set, set default fallback.
+        $template = '[holder] [year]';
+      }
+      else {
+        // Assure that we don't put out unescaped HTML.
+        $template = check_plain($template);
+      }
+
+      // Replace the placeholders in the template to calculate the output text.
+      $copyright_text = str_replace('[holder]', check_plain($holder), str_replace('[year]', $year, $template));
+
+      // Create the block.
+      $block['content'] = '<div class="copyright"><div><img style="display:none" src="/sites/default/files/footer_divider.png"></div><span class="copyright">&copy; ' . $copyright_text . '</span></div>';
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure().
+ *
+ * Creates the form data to set the copyright holder and the inception year.
+ */
+function copyright_block_block_configure($delta = '') {
+  $form = array();
+  if ($delta == 'copyright') {
+    $form['copyright_block'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Copyright settings'),
+    );
+    // Plain text field for the name of the copyright holder.
+    $form['copyright_block']['copyright_block_copyrightholder'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Copyright holder'),
+      '#size' => 64,
+      '#description' => t('Name of the copyright holder. Leave empty to use the site name.'),
+      '#default_value' => variable_get('copyright_block_copyrightholder'),
+    );
+
+    // Plain text field for the year the copyright starts.
+    $inceptionyear = variable_get('copyright_block_inceptionyear');
+    $form['copyright_block']['copyright_block_inceptionyear'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Copyright starting year'),
+      '#size' => 8,
+      '#description' => t('Year the copyright starts. Leave empty to only show current year.'),
+      '#default_value' => $inceptionyear ? $inceptionyear : '',
+    );
+
+    $form['copyright_block_display'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Copyright display settings'),
+    );
+
+    // Template to use to display the copyright
+    $template = variable_get('copyright_block_template');
+    $form['copyright_block_display']['copyright_block_template'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Display template'),
+      '#size' => 64,
+      '#description' => t('Template to be used to display the copyright. [year] will be replaced by the date range, [holder] will be replaced by the copyright holder.'),
+      '#default_value' => $template ? $template : '[holder] [year]',
+    );
+
+    // Template to use to display the copyright
+    $template = variable_get('copyright_block_spacertemplate');
+    $form['copyright_block_display']['copyright_block_spacertemplate'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Spacer template'),
+      '#size' => 64,
+      '#description' => t('Template that will be used to separate the year values (only used if the inception year is in the past).'),
+      '#default_value' => $template ? $template : ' - ',
+    );
+
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ *
+ * Stores the copyright holder and the inception year.
+ */
+function copyright_block_block_save($delta = '', $edit = array()) {
+  if ($delta == 'copyright') {
+    $copyright_block_copyrightholder = $edit['copyright_block_copyrightholder'];
+    if ($copyright_block_copyrightholder == variable_get('site_name', '')) {
+      $copyright_block_copyrightholder = '';
+    }
+    variable_set('copyright_block_copyrightholder', $copyright_block_copyrightholder);
+    $copyright_block_inceptionyear = intval($edit['copyright_block_inceptionyear']);
+    $current_year = date('Y', REQUEST_TIME);
+    if ($copyright_block_inceptionyear > $current_year) {
+      $copyright_block_inceptionyear = $current_year;
+    }
+    variable_set('copyright_block_inceptionyear', $copyright_block_inceptionyear);
+    variable_set('copyright_block_template', $edit['copyright_block_template']);
+    variable_set('copyright_block_spacertemplate', $edit['copyright_block_spacertemplate']);
+  }
+}
+
