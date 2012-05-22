@@ -6,7 +6,7 @@
     height: 540px;
     overflow: hidden;
     position: relative;
-    width: 1400px;
+    width: 1420px;
 }
 .hs_container .hs_area {
     overflow: hidden;
@@ -16,12 +16,25 @@
 .hs_area img.hs_visible {
     display: block;
     z-index: 200;
+	max-width: none;
 }
-
+.hs_area1a img,.hs_area1b img,.hs_area6a img,.hs_area6b img {
+  height: 332px;
+  width: 223px;
+}
 .hs_area2a img,.hs_area2b img,.hs_area3a img,.hs_area3b img {
   height: 155px;
   width: 223px;
 }
+.hs_area4a img,.hs_area4b img,.hs_area7a img,.hs_area7b img{
+  height: 135px;
+  width: 167px;
+}
+.hs_area5a img,.hs_area5b img {
+  height: 135px;
+  width: 335px;
+}
+
 .artisan_img_frame {
   border-right: 1px solid white;
   overflow:hidden;

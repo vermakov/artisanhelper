@@ -29,10 +29,16 @@
  */
 ?>
 <div class="<?php print $classes; ?>">
-  <div class="artwork-teaser-wrapper"><a href="<?php print $link_url; ?>">
+  
+  <?php if(user_access('administer artworks')) {
+	print '<div class="artwork_teaser_edit"><a href="/artwork/' . $item_id .'/edit">Edit</a></div>';
+	} ?>
+  <div class="artwork_teaser_wrapper"><a href="<?php print $link_url; ?>">
   <div class="artwork_teaser_title"><?php print render($title); ?></div>
   <div class="artwork_teaser_pic"><img src="<?php print image_style_url('artwork_thumbnail', $image_uri) ?>"></div></a>
   <div class="artwork_teaser_name">by <a href="/artisan/<?php print $artisan_id; ?>"><?php print t('!username', array('!username' => $artisan_name)); ?></a></div>
   <div class="artwork_teaser_price"><?php print '$<div class="artwork_teaser_price_num">' . number_format($price,2) . '</div>USD'; ?></div>
+  
   </div>
+  
 </div>

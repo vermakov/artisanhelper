@@ -36,7 +36,7 @@
   print '<li class="artworks_list_cell">';
 
 //<div class="profile_item_title">' . $item['title'] . '</div><div class="profile_artwork_list_pic"><img src="' . image_style_url('large', $item['image_url']) . '"></div><div class="proile_item_price">' . '$' . number_format($item['price'],2) . '</div></li>'; 
-  print theme('artwork_teaser',array('link_url' => $item['link_url'],'title' => $item['title'],'image_uri' => $item['image_url'],'price'=>number_format($item['price'],2),'artisan_id' => $artisan_id, 'artisan_name' => $artisan_name));
+  print theme('artwork_teaser',array('link_url' => $item['link_url'],'item_id' => $item['item_id'], 'title' => $item['title'],'image_uri' => $item['image_url'],'price'=>number_format($item['price'],2),'artisan_id' => $artisan_id, 'artisan_name' => $artisan_name));
   print '</li>';
 ?>
 <?php } ?>

@@ -1,17 +1,97 @@
 (function($){ 
+  var defaultBoxLeft = [];
+  var defaultBoxWidth = [];
+	  
+  function adjustSlider() {
+	  var windowWidth = $(window).width();
+	  
+	  var MIN_WINDOW_WIDTH = 960;
+	  var MAX_WINDOW_WIDTH = 1450;
+	  
+	  var DEFAULT_SLIDER_WIDTH = 1420;
+	  // Enforce minimum window size
+	  if(windowWidth < MIN_WINDOW_WIDTH){
+		windowWidth = MIN_WINDOW_WIDTH;
+	  }else if(windowWidth > MAX_WINDOW_WIDTH){
+		windowWidth = MAX_WINDOW_WIDTH;
+	  }
+	  
+	  
+	  // Lets compute the proper sizes for the individual windows.
+	  var proportion = (windowWidth) / DEFAULT_SLIDER_WIDTH;
+	  
+	  /*$(".descriptioncover_text").each(function(i, div) { 
+		div.style.fontSize = 12*proportion + "pt";
+	  });*/
+	  
+	  // If the default slider is larger than the window, lets resize the slider (just scale all widths by the proportion)
+	  //if(proportion < 1.0)  {
+		boxes = $(".artisan_item_box");
+		artisans = $(".artisan_img_frame>img");
+		artworks = $(".artwork_img_frame>img");
+		for(i = 0;i<boxes.length;i++){
+			//console.log("i = " + i + " Box Width: " + $(boxes[i]).width());
+			$(boxes[i]).css({width: defaultBoxWidth[i] * proportion});
+			$(boxes[i]).css({left: defaultBoxLeft[i] * proportion});
+			//$(artisans[i]).css({width: $(artisans[i]).width(),height: $(artisans[i]).height()});
+			
+			console.log("Artisan: " + $(artisans[i]).height() + " " + $(artisans[i]).width());
+			$(artisans[i]).parent().css({height: $(artisans[i]).height(),width: $(artisans[i]).width() * proportion});
+			$(artworks[i]).parent().css({height: $(artworks[i]).height(),width: $(artworks[i]).width() * proportion});
+			//$(artworks[i]).css({width: $(artworks[i]).width() * proportion,height: $(artworks[i]).height() * proportion});
+		}
+		$(".hs_container").css({width: DEFAULT_SLIDER_WIDTH * proportion });
+	  //}
+	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + $(".hs_container").offset().left + " " + ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left));
+	  $(".hs_container").css({left: ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left)});
+	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + $(".hs_container").offset().left + " " + ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left));
+	  
+	  $(".descriptioncover").each(function(i, div) { 
+		//console.log("description.width = " + $(div).parent().parent().width() + " " + $(div).parent().width() + " " + $(div).width());
+		  $(div).css({ 
+			position: "absolute", 
+			width: $(div).parent().parent().width(),
+			height: $(".artisancover",$(div).parent().parent().parent().parent()).height(),
+			top: $(div).parent().parent().parent().height(), 
+			left: $(div).parent().parent().width(),
+			display: "inline", 
+		  }); 
+	  });
+
+	  $(".pricecover").each(function(i, div) { 
+		  $(div).css({ 
+			  position: "absolute", 
+			  top: 0, 
+			  left: parseInt($(div).parent().parent().parent().parent().width() - $(div).width()), 
+			  display: "inline", 
+		  }); 
+	  });
+  }
+  
+  $(window).resize(function() {
+	adjustSlider();
+  });
+  
   $(document).ready(function(){
-  $(".hs_container").css({left: (($(window).width() - ($(".hs_container").width()))/2 - $(".hs_container").offset().left)});
-  $(".hs_area").hover(function(){ 
-  //	$(".artisancover", this).stop().animate({top: $(this).height() - 30 },{queue:false,duration:200});
- // 	$(".pricecover", this).stop().animate({top: 0},{queue:false,duration:200});
-    $(".descriptioncover", this).stop().animate({top: $(this).height() - $(".descriptioncover",$(this)).height()},{queue:false,duration:200});
-  }, function() {
+    boxes = $(".artisan_item_box");
+	for(i = 0;i<boxes.length;i++){
+		defaultBoxLeft[i] = $(boxes[i]).offset().left;
+		defaultBoxWidth[i] = $(boxes[i]).width();
+	}
+  
+	adjustSlider();
+	$(".hs_area").hover(function(){ 
+	//	$(".artisancover", this).stop().animate({top: $(this).height() - 30 },{queue:false,duration:200});
+	// 	$(".pricecover", this).stop().animate({top: 0},{queue:false,duration:200});
+		$(".descriptioncover", this).stop().animate({top: $(this).height() - $(".descriptioncover",$(this)).height()},{queue:false,duration:200});
+	}, function() {
 //    $(".artisancover", this).stop().animate({top:$(this).height()},{queue:false,duration:200});
     //$(".pricecover", this).stop().animate({top:-40},{queue:false,duration:200});
-    $(".descriptioncover", this).stop().animate({top:$(this).height()},{queue:false,duration:200});
+		$(".descriptioncover", this).stop().animate({top:$(this).height()},{queue:false,duration:200});
+	});
   });
-  });
-  $(window).load(function(){/*
+  
+  /*$(window).load(function(){
   $(".hs_artisan img:first-child").each(function(i, img) { 
   $(img).css({ 
   position: "relative", 
@@ -27,17 +107,19 @@
   }); 
   });
 */
-  $(".descriptioncover").each(function(i, div) { 
-  $(div).css({ 
-    position: "absolute", 
-    width: $(div).parent().parent().width(),
-    height: $(".artisancover",$(div).parent().parent().parent().parent()).height(),
-    top: $(div).parent().parent().parent().height(), 
-    left: $(div).parent().parent().width(),
-    display: "inline", 
-  }); 
+/*
+	  $(".descriptioncover").each(function(i, div) { 
+	  $(div).css({ 
+		position: "absolute", 
+		width: $(div).parent().parent().width(),
+		height: $(".artisancover",$(div).parent().parent().parent().parent()).height(),
+		top: $(div).parent().parent().parent().height(), 
+		left: $(div).parent().parent().width(),
+		display: "inline", 
+	  }); 
   });
-
+*/
+/*
   $(".pricecover").each(function(i, div) { 
   $(div).css({ 
   position: "absolute", 
@@ -46,6 +128,7 @@
   display: "inline", 
   }); 
   });
+  */
 /*
   $(".artisancover").each(function(i, div) { 
   $(div).css({ 
@@ -56,6 +139,9 @@
   display: "inline", 
   }); 
   });
-  */
   
-  });})(jQuery);
+  
+  });
+  
+  */
+  })(jQuery);

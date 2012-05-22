@@ -28,7 +28,7 @@
  * @see template_preprocess_single_blog_block_item()
  */
 ?>
-<div class="<?php print $classes; ?> clearfix" style="width:1200px">
+<div class="<?php print $classes; ?> clearfix">
 <table width="100%">
 <tr><td>
 <div id="become_artisan_helper" class="clearfix" style="float:left;display:inline"><a href="/join"><img src="/sites/default/files/become_artisan_helper.jpg"></a></div>

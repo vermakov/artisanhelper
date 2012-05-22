@@ -289,7 +289,7 @@ function theme_artwork_front_page_slider(&$variables)
   shuffle($verticalKeys);
   shuffle($horizontalKeys);
 
-  $nameLimits = array(50,50,50,18,50,50,18);
+  $nameLimits = array(50,50,50,23,50,50,23);
   
   // Create a list of vertial artisans.
   for($indx = 1;$indx <= 7;$indx+=1) {
@@ -348,7 +348,7 @@ function theme_artwork_front_page_slider(&$variables)
           $title = substr($title,0,$nameLimits[$indx-1]) . '...';
         }
 
-	  $output .= '		<a href="' . $link . '" ><div class="artwork_img_frame"><img  class="' . $img_class . ' hs_visible" alt="" src="' . image_style_url($item['image_style_artwork'], $artwork_file_info->uri) . '" ><div class="pricecover boxcaption"><div class="pricecover_text">$<div class="pricecover_digits">' .number_format( $item['artworks'][0]->max_price,2) . '</div>USD</div></div><div class="descriptioncover boxcaption"><div class="descriptioncover_text">' . $title . ' by <div class="descriptioncover_name">'. $artisan_name . '</div></div></div></div></a>';
+	  $output .= '		<a href="' . $link . '" ><div class="artwork_img_frame"><img  class="' . $img_class . ' hs_visible" alt="" src="' . image_style_url($item['image_style_artwork'], $artwork_file_info->uri) . '" ><div class="pricecover boxcaption"><div class="pricecover_text">$<div class="pricecover_digits">' .number_format( $item['artworks'][0]->max_price,2) . '</div>USD</div></div><div class="descriptioncover boxcaption"><div class="descriptioncover_text">' . $title . '</div></div></div></a>';
 
     $output .= '      </div></div>';
   }
