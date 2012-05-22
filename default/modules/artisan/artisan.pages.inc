@@ -214,6 +214,7 @@ function template_preprocess_artisan_items_area(&$variables) {
           'full_title' => $item->title,
 	  'image_url' => $image_url,
 	  'price' => $item->max_price,
+	  'item_id' => $item->item_id,
           'link_url' => $link_url,
 	);
     //}
@@ -326,9 +327,9 @@ function artisan_page_view($artisan, $view_mode = 'full') {
     );
 	
 	$content['artisan_profile_page'] = array(
-	  '#prefix' => '<div class="artisan_profile_page clearfix">',
+	  '#prefix' => '<table class="artisan_profile_page clearfix"><tr>',
 	  'profile_left_column' => array(
-	    '#prefix' => '<div class="profile_left_column clearfix">',
+	    '#prefix' => '<td class="profile_left_column clearfix">',
 		'profile_image_area' => array(
 	      '#prefix' => '<div class="profile_image_area clearfix">',
 		  '#markup' => theme('profile_image_area',array('artisan' => $artisan)),
@@ -343,10 +344,10 @@ function artisan_page_view($artisan, $view_mode = 'full') {
 	      '#prefix' => '<div class="profile_become_artisan_helper clearfix">',
 		  '#suffix' => '</div>',
 	    ),
-		'#suffix' => '</div>',
+		'#suffix' => '</td>',
 	  ),
 	  'profile_right_column' => array(
-	    '#prefix' => '<div class="profile_right_column clearfix">',
+	    '#prefix' => '<td class="profile_right_column clearfix">',
 	    'personal_info_area' => array(
 		  //'#theme' => 'profile_info_area',
 		  //'#artisan' => $artisan,
@@ -364,18 +365,18 @@ function artisan_page_view($artisan, $view_mode = 'full') {
 		  '#markup' => theme('artisan_items_area',array('artisan' => $artisan)),
 		  '#suffix' => '</div>',
 		),
-		'#suffix' => '</div>',
+		'#suffix' => '</td></tr>',
 	  ),
 	  'profile_footer_area' => array(
-	    '#prefix' => '<div class="profile_footer_area clearfix">',
+	    '#prefix' => '<tr><td colspan=2 class="profile_footer_area clearfix">',
 	    'profile_similar_artisans' => array(
 	      '#prefix' => '<div class="profile_similar_artisans clearfix">',
 		  '#markup' => theme('profile_similar_artisans',array('artisan' => $artisan)),
 		  '#suffix' => '</div>',
 		),
-		'#suffix' => '</div>',
+		'#suffix' => '</tr></td>',
 	  ),
-	  '#suffix' => '</div>',
+	  '#suffix' => '</table>',
 	  '#attached' => array(
 	     'css' => array( drupal_get_path('module','artisan') . '/artisan_page.css' ),
 	  ),

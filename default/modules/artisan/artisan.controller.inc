@@ -42,7 +42,7 @@ class ArtisanEntityController extends EntityAPIController {
   	        'name' => $name,
 		    'image_uri' => $image_file->uri,
 		    'artisan_id' => check_plain($entity->artisan_id),
-		    'short_description' => check_plain($short_description),
+		    'short_description' => check_plain($short_description)
 	      )
 	    )
 	  );

@@ -27,7 +27,13 @@
     margin: 0 14px 14px 0;
 }
 
-.artwork-teaser-wrapper {
+.artwork_teaser_edit {
+  display: inline;
+  position: absolute;
+  top: -15px;
+}
+
+.artwork_teaser_wrapper {
   padding : 0px 4px 0px 4px;
 }
 

@@ -42,20 +42,22 @@
 }
 
 .profile_left_column {
-	width: 480px;
+	width: 300px;
+	vertical-align:top;
 	//background-color: blue;
-	float: left;
+	//float: left;
 }
 
 .profile_right_column {
-	width: 680px;
+	width: 70%;
+	vertical-align:top;
 	/* background-color: green; */
-	float: left;
+	/* float: left; */
 }
 
 .profile_footer_area {
 	width: 100%;
-	float: left;
+	//float: left;
 }
 
 .profile_image_area {
