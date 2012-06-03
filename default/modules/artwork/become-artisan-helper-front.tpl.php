@@ -30,7 +30,7 @@
 ?>
 <div class="<?php print $classes; ?> clearfix">
 <table width="100%">
-<tr><td>
+<tr><td width="400">
 <div id="become_artisan_helper" class="clearfix" style="float:left;display:inline"><a href="/join"><img src="/sites/default/files/become_artisan_helper.jpg"></a></div>
 </td><td style="vertical-align:top">
 <div id="slogan_phrase" class="clearfix" style="float:left;margin:20px 0 0 40px;display:none">
