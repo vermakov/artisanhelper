@@ -44,5 +44,5 @@
 .region-sidebar-first {width: 0%; margin-left: -0%;}
 .region-sidebar-second {width: 0%; margin-left: -0%; clear: none;}
 .sidebar-first .region-sidebar-first {width: 0%; margin-left: -0%;}
-.container {width: 100%; max-width: 1260px;}
+.container {width: 100%;}
 }

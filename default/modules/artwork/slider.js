@@ -9,6 +9,8 @@
 	  var MAX_WINDOW_WIDTH = 1450;
 	  
 	  var DEFAULT_SLIDER_WIDTH = 1420;
+	  
+
 	  // Enforce minimum window size
 	  if(windowWidth < MIN_WINDOW_WIDTH){
 		windowWidth = MIN_WINDOW_WIDTH;
@@ -42,9 +44,21 @@
 		}
 		$(".hs_container").css({width: DEFAULT_SLIDER_WIDTH * proportion });
 	  //}
-	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + $(".hs_container").offset().left + " " + ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left));
-	  $(".hs_container").css({left: ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left)});
-	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + $(".hs_container").offset().left + " " + ((windowWidth - ($(".hs_container").width()))/2 - $(".hs_container").offset().left));
+	  if(typeof($(".hs_container").offset().left) != "undefined"){
+		offsetLeft = $(".hs_container").offset().left;
+	  } else {
+          	offsetLeft = parseInt($(".hs_container")[0].style.left);
+	  }
+          if(isNaN(offsetLeft)) {
+		offsetLeft = 0;
+ 	  }
+	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + offsetLeft + " " + ((windowWidth - ($(".hs_container").width()))/2 - offsetLeft));
+	  $(".hs_container").css({left: ((windowWidth - ($(".hs_container").width()))/2 - offsetLeft)});
+          offsetLeft = parseInt($(".hs_container")[0].style.left);
+          if(isNaN(offsetLeft)) {
+		offsetLeft = 0;
+ 	  }
+	  console.log(windowWidth + " " + $(".hs_container").width() + " " + proportion + " " + offsetLeft + " " + ((windowWidth - ($(".hs_container").width()))/2 - offsetLeft));
 	  
 	  $(".descriptioncover").each(function(i, div) { 
 		//console.log("description.width = " + $(div).parent().parent().width() + " " + $(div).parent().width() + " " + $(div).width());
@@ -54,16 +68,15 @@
 			height: $(".artisancover",$(div).parent().parent().parent().parent()).height(),
 			top: $(div).parent().parent().parent().height(), 
 			left: $(div).parent().parent().width(),
-			display: "inline", 
+			display: "inline"
 		  }); 
 	  });
 
 	  $(".pricecover").each(function(i, div) { 
+		  $(div).css({top: 0,left: 0});
 		  $(div).css({ 
-			  position: "absolute", 
 			  top: 0, 
-			  left: parseInt($(div).parent().parent().parent().parent().width() - $(div).width()), 
-			  display: "inline", 
+			  left: parseInt($(div).parent().parent().parent().parent().width() - $(div).width()-1) 
 		  }); 
 	  });
   }

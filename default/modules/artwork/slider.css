@@ -7,6 +7,7 @@
     overflow: hidden;
     position: relative;
     width: 1420px;
+    left: 0px;
 }
 .hs_container .hs_area {
     overflow: hidden;
@@ -56,13 +57,12 @@
 	float: left;
   	text-shadow: 0px 1px 2px black;
 	position: absolute;
-	background: rgba(0,0,0,0.6);
 	z-index: 205;
-	display: none;
-	/* For IE 5-7 */
-	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-	/* For IE 8 */
-	-MS-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	display: inline;
+background:none;
+background: transparent ;
+background: rgba(0,0,0,0.6) ;
+filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#99000000', EndColorStr='#99000000');	
 }
 .slider_country_name {
   font-size: 10pt;
@@ -107,9 +107,6 @@
   color: #E25400;
   display:inline;
   opacity: 1;
-}
-.hs_area5a .artisan_img_frame img {
-  position: relative;
 }
 
 .artisan_item_box {
